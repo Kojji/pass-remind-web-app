@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-/* import store from '../store/index' */
+import store from '../store/index'
 
 import HomePage from '../views/Home.vue'
 import LoginPage from '../views/Login.vue'
@@ -12,10 +12,11 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    /* beforeEnter(to,from,next) {
-      store.dispatch('getUserList', store.getters("userData"))
-      next()
-    }, */
+   /* eslint-disable no-console */
+    beforeEnter(to,from,next) {
+      if(!store.getters.logged) { next('login') }
+      else next()
+    },
     component: HomePage
   },
   {
