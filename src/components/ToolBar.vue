@@ -3,7 +3,7 @@
     <v-app-bar app
     fixed
     dense
-    extended
+    :extended="logged"
     dark
     color="orange darken-1"
     >
@@ -18,8 +18,8 @@
       </v-toolbar-items>
       <template #extension>
         <v-toolbar-items>
-          <v-btn text><v-icon>Criar Registro</v-icon></v-btn>
-          <v-btn text><v-icon>Sair</v-icon></v-btn>
+          <v-btn text><v-icon>{{ toolBarIcons.addIcon }}</v-icon></v-btn>
+          <v-btn text @click="deslogar"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
         </v-toolbar-items>
       </template>
     </v-app-bar>
@@ -40,12 +40,20 @@ export default {
   computed: {
     ...mapGetters([
       "redirects",
-      "logged"
+      "logged",
+      "toolBarIcons",
     ])
     
   },
   methods: {
-    
+    deslogar() {
+      if(confirm("Tem certeza que deseja sair do sistema?")) {
+        this.$store.dispatch('userLogoff')
+          .then(()=>{
+            this.$router.push('/login')
+          })
+      }
+    }
   }
 };
 </script>

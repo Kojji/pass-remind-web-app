@@ -33,7 +33,7 @@
               Entrar
               </v-btn>
               <v-btn
-                color="pink"
+                color="orange"
                 text
                 @click="createAccount"
               >
