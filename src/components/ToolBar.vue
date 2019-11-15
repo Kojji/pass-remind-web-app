@@ -3,6 +3,7 @@
     <v-app-bar app
     fixed
     dense
+    extended
     dark
     color="orange darken-1"
     >
@@ -11,6 +12,16 @@
         <span class="font-weight-light">Remind</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
+        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">Usuário</v-btn>
+      </v-toolbar-items>
+      <template #extension>
+        <v-toolbar-items>
+          <v-btn text><v-icon>Criar Registro</v-icon></v-btn>
+          <v-btn text><v-icon>Sair</v-icon></v-btn>
+        </v-toolbar-items>
+      </template>
     </v-app-bar>
   </v-layout>
 </template>
@@ -28,7 +39,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      
+      "redirects",
+      "logged"
     ])
     
   },
