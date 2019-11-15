@@ -2,12 +2,10 @@
   <v-layout wrap>
     <v-app-bar app
     fixed
-    dense
-    :extended="logged"
     dark
     color="orange darken-1"
     >
-      <v-toolbar-title class="headline text-uppercase" id="logoPassRemind">
+      <v-toolbar-title class="headline text-uppercase" id="logoPassRemind" @click="redirectHome">
         <span>Pass</span>
         <span class="font-weight-light">Remind</span>
       </v-toolbar-title>
@@ -16,8 +14,8 @@
         <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
         <v-btn text :to="redirects.redirectUserPage" v-show = "logged">Usuário</v-btn>
       </v-toolbar-items>
-      <template #extension>
-        <v-toolbar-items>
+      <template #extension v-if="logged">
+        <v-toolbar-items >
           <v-btn text><v-icon>{{ toolBarIcons.addIcon }}</v-icon></v-btn>
           <v-btn text @click="deslogar"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
         </v-toolbar-items>
@@ -46,6 +44,9 @@ export default {
     
   },
   methods: {
+    redirectHome() {
+      this.$router.push('/')
+    },
     deslogar() {
       if(confirm("Tem certeza que deseja sair do sistema?")) {
         this.$store.dispatch('userLogoff')

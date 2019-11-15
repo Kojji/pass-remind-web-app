@@ -81,7 +81,7 @@ export default {
         .then(()=>{
           this.$store.dispatch('getUserInfo')
           .then(()=>{
-            this.$router.push('/user')
+            this.$router.push('/')
           })
         }).catch((error)=>{
           if(error === 'err1') { alert("Conta não encontrada") }
@@ -89,8 +89,17 @@ export default {
         })
       }
     },
-    createAccount() {
-      //
+    createAccount() { // mudar depois, realiza login "automatico" no desenvolvimento
+      let form = []
+      form.login = "teste@teste.com";
+      form.password = "teste";
+      this.$store.dispatch('userLogin', form)
+      .then(()=>{
+        this.$store.dispatch('getUserInfo')
+        .then(()=>{
+          this.$router.push('/')
+        })
+      })
     }
   }
 }

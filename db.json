@@ -33,507 +33,70 @@
       "loginId": 3
     }
   ],
-  "Cart": [
+  "Registry": [
     {
       "id": 1,
-      "userId": 1,
-      "items": []
-    }
-  ],
-  "Post": [
-    {
-      "id": 1,
-      "NomeAnimal": null,
-      "userId": null,
-      "messages": [
-        {
-          "userId": null,
-          "message": "",
-          "time": null
-        }
-      ]
-    }
-  ],
-  "Produtos": [
-    { 
-      "id": 1,
-      "shop": 1,
-      "title": "Ração Pedigree para Cães Adultos Raças Pequenas 1Kg",
-      "src": "https://www.petlove.com.br/images/products/202864/product/Ra%C3%A7%C3%A3o_Pedigree_para_C%C3%A3es_Adultos_de_Ra%C3%A7as_Pequenas_a_partir_de_10_Meses_de_Idade_3104845.jpg?1556404760",
-      "text": "Ração Pedigree para cão adulto Raças Pequenas sabor carne",
-      "available": 4,
-      "price": 17.60,
-      "discount": false
-    },
-    { 
-      "id":2,
-      "shop": 1,
-      "title": "Ração Pedigree para Cães Adultos Raças Medias e grandes 1Kg",
-      "src": "https://www.petlove.com.br/images/products/208667/product/Ra%C3%A7%C3%A3o_Seca_Pedigree_Carne__Frango_e_Cereais_para_C%C3%A3es_Adultos_Ra%C3%A7as_M%C3%A9dias_e_Grandes_3104832-1_1Kg.jpg?1559650422g",
-      "text": "Ração pedigree para cão adulto Raças medias e grandes sabor carne, frango e cereais",
-      "price": 17.00,
-      "available": 4,
-      "discount": false
+      "userId": 534566,
+      "login": "login 1",
+      "password": "pass 1",
+      "service": "service 1",
+      "dateStamp": 0
     },
     {
-      "id":3,
-      "shop": 1,
-      "title": "Ração Pedigree para Cães Filhotes Raças Pequenas 900g",
-      "src": "https://www.petlove.com.br/images/products/202856/product/PEDIGREE-FILHOTES-RA%C3%87AS-PEQUENAS-900g_NOVA-RECEITA_31025090-1.jpg?1556412733",
-      "text": "Ração Pedigree para Cães Filhotes Raças Pequenas com Cálcio",
-      "price": 17.60,
-      "available": 4,
-      "discount": false
+      "id": 2,
+      "userId": 534566,
+      "login": "login 2",
+      "password": "pass 2",
+      "service": "service 2",
+      "dateStamp": 0
     },
     {
-      "id":4,
-      "shop": 1,
-      "title": "Ração Pedigree para Cães Filhotes Raças Medias e grandes 1Kg",
-      "src": "https://www.petlove.com.br/images/products/202860/product/Ra%C3%A7%C3%A3o_Pedigree_Junior_para_C%C3%A3es_Filhotes_de_Ra%C3%A7as_M%C3%A9dias_e_Grandes_1_Kg-3104813-2.jpg?1556402709",
-      "text": "Ração pedigree para cão Filhotes Raças medias e grandes com Cálcio",
-      "price": 17.65,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":5,
-      "shop": 1,
-      "title": "Ração Whiskas para Gatos Filhotes 2-12 Meses 1Kg",
-      "src": "https://www.petlove.com.br/images/products/203908/product/1_Kg.jpg?1556375073",
-      "text": "Ração Whiskas para Gatos Filhotes Sabor Carne e Leite",
-      "price": 22.50,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":6,
-      "shop": 1,
-      "title": "Ração Whiskas para Gatos Adultos 1 ano+ 1Kg",
-      "src": "https://www.petlove.com.br/images/products/203918/product/10_1_Kg.jpg?1556481320",
-      "text": "Ração Whiskas para Gatos Adultos Sabor Peixe",
-      "price": 21.50,
-      "available": 4,
-      "discount": false
+      "id": 3,
+      "userId": 534566,
+      "login": "login 3",
+      "password": "pass 3",
+      "service": "service 3",
+      "dateStamp": 0
     },
     {
-      "id":7,
-      "shop": 1,
-      "title": "Ração Whiskas para Gatos Adultos 1 ano+ 1Kg",
-      "src": "https://www.petlove.com.br/images/products/203906/product/10_1_Kg.jpg?1556480985",
-      "text": "Ração Whiskas para Gatos Adultos Castrados",
-      "price": 22.50,
-      "available": 4,
-      "discount": false
+      "id": 4,
+      "userId": 534566,
+      "login": "login 4",
+      "password": "pass 4",
+      "service": "service 4",
+      "dateStamp": 0
     },
     {
-      "id":8,
-      "shop": 1,
-      "title": "Ração Whiskas para Gatos Adultos 7 Anos+ 1Kg",
-      "src": "https://www.petlove.com.br/images/products/203901/product/1_Kg.jpg?1556463845",
-      "text": "Ração Whiskas para Gatos Adultos Sabor Carne",
-      "price": 22.00,
-      "available": 4,
-      "discount": false
+      "id": 5,
+      "userId": 534566,
+      "login": "login 5",
+      "password": "pass 5",
+      "service": "service 5",
+      "dateStamp": 0
     },
     {
-      "id":9,
-      "shop": 1,
-      "title": "Comedouro Inox Chalesco",
-      "src": "https://www.petlove.com.br/images/products/185942/product/31010137.jpg?1556393189",
-      "text": "200Ml, Antiferrugem, Antiderrapante",
-      "price": 14.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":10,
-      "shop": 1,
-      "title": "Tigela Chalesco Inox",
-      "src": "https://www.petlove.com.br/images/products/186851/product/Chalesco_Tigela_Inox_31010142_1.jpg?1556387415",
-      "text": "360Ml, Resistente, facilita limpeza",
-      "price": 10.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":11,
-      "shop": 1,
-      "title": "Comedouro Plástico Furacão",
-      "src": "https://www.petlove.com.br/images/products/152402/product/Comedouro-Plastico-Azul-Furacao-Pet-350ml---Tam-1.jpg?1556340627",
-      "text": "350Ml, Resistente, Prático, Azul",
-      "price": 5.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":12,
-      "shop": 1,
-      "title": "Bebedouro e Comedouro PetBamboo",
-      "src": "https://www.petlove.com.br/images/products/204756/product/Bebedouro_e_Comedouro_PetBamboo_Irregular_em_Bambu_-_Tam._M_2163815_1.jpg?1556455081",
-      "text": "2 em 1, Bamboo, Tigelas em Inox",
-      "price": 199.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":13,
-      "shop": 1,
-      "title": "Comedouro Plástico Furacão para Gato",
-      "src": "https://www.petlove.com.br/images/products/138265/product/3101748.jpg?1556342956",
-      "text": "200Ml, Antiformiga, Resistente, Prático",
-      "price": 5.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":14,
-      "shop": 1,
-      "title": "Comedouro Pet duplo injet(10)",
-      "src": "https://www.petlove.com.br/images/products/180886/product/311693_1.jpg?1556434257",
-      "text": "250Ml, Resistente, Facil Higienização, Vermelho",
-      "price": 15.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":15,
-      "shop": 1,
-      "title": "Comedouro Jambo Fusion para Gatos",
-      "src": "https://www.petlove.com.br/images/products/178964/product/3109904_1.jpg?1556434417",
-      "text": "225Ml, Carinhas de Gatos,Aço Inoxidavel,Resistente",
-      "price": 30.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":16,
-      "shop": 1,
-      "title": "Fonte Bebedouro Amicus Aqua Mini",
-      "src": "https://www.petlove.com.br/images/products/201075/product/Fonte_Bebedouro_Amicus_Aqua_Mini_Bivolt_Azul_1994059_1.jpg?1556467916",
-      "text": "Facil Montagem e Limpeza, indicada por veterinarios, Bivolt, Consumo Baixo de energia",
-      "price": 109.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":17,
-      "shop": 1,
-      "title": "Coleira K-9 Spirit Unificada",
-      "src": "https://www.petlove.com.br/images/products/213074/product/Guia_K-9_Spirit_Unificada_Preta_1789233.jpg?1566999396",
-      "text": "Preta, Facil Utilização, Maior Segurança",
-      "price": 80.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":18,
-      "shop": 1,
-      "title": "Guia Retrátil",
-      "src": "https://www.petlove.com.br/images/products/200356/product/Guia_Fita_Flexi_Design_Azul_-_Tam_1961425.jpg?1556466118",
-      "text": "alcance de 3 metros, Gancho de engate cromado, É atraente e Sofisticada",
-      "price": 109.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":19,
-      "shop": 1,
-      "title": "Coleira ModernPet",
-      "src": "https://www.petlove.com.br/images/products/192603/product/7898619521152_c%C3%B3pia.jpg?1556453154",
-      "text": "Em Tecido, Estampa de Caveira, Design moderno, Resistente",
-      "price": 41.93,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":20,
-      "shop": 1,
-      "title": "Peitoral K-9 Spirit de treinamento",
-      "src": "https://www.petlove.com.br/images/products/193572/product/Peitoral_de_treinamento_preto_lateral_c%C3%B3pia.jpg?1556451272",
-      "text": "Preto, Facil Utilização, Design Moderno, Confortavel e não machuca o pet, Tamanho P",
-      "price": 120.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":21,
-      "shop": 1,
-      "title": "COleira Pawise para Gatos",
-      "src": "https://www.petlove.com.br/images/products/180226/product/311374.jpg?1556437605",
-      "text": "Estampa de Borboleta, Azul, COm guiso, Com regulagem",
-      "price": 19.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":22,
-      "shop": 1,
-      "title": "Peitoral Pawise para gatos",
-      "src": "https://www.petlove.com.br/images/products/186039/product/3106607.gif?1556442483",
-      "text": "Estampada, Peitoral regulavel, Provê Segurança e Praticidade, Indicado para filhotes",
-      "price": 49.90,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":23,
-      "shop": 1,
-      "title": "Colar Rogz Sparklecat",
-      "src": "https://www.petlove.com.br/images/products/184620/product/311248_1_1.jpg?1556436905",
-      "text": "Preto, Com guizo, Refletiva, Confortavel",
-      "price": 56.20,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":24,
-      "shop": 1,
-      "title": "Brinquedo Arranhador The Pets Brasil",
-      "src": "https://www.petlove.com.br/images/products/204576/product/Brinquedo_Arranhador_The_Pets_Brasil_Andar_Suspenso_1962770_1.jpg?1556470352",
-      "text": "Com Andar Suspenso, ajuda a condicionar as unhas, Contribui para Atividade Física",
-      "price": 119.90,
-      "available": 4,
-      "discount": false
+      "id": 6,
+      "userId": 534566,
+      "login": "login 6",
+      "password": "pass 6",
+      "service": "service 6",
+      "dateStamp": 0
     },
     {
-      "id":25,
-      "shop": 2,
-      "title": "Camiseta Dog Matthew",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-dog-matthew-web.jpg",
-      "text": "Camiseta com um dog muito charmoso.",
-      "price": 75.00,
-      "available": 4,
-      "discount": false
+      "id": 7,
+      "userId": 534566,
+      "login": "login 7",
+      "password": "pass 7",
+      "service": "service 7",
+      "dateStamp": 0
     },
-    { 
-      "id":26,
-      "shop": 2,
-      "title": "Camiseta Dog Bates",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-dog-bates-web.jpg",
-      "text": "Camiseta com um salsichinha muito sapeca!",
-      "price": 75.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":27,
-      "shop": 2,
-      "title": "Camiseta Dog Tom",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-dog-tom-web.jpg",
-      "text": "Camiseta com um Doguito muito fashion",
-      "price": 75.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":28,
-      "shop": 2,
-      "title": "Camiseta Dog Carson",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/camiseta-dog-carson-web.jpg",
-      "text": "Camiseta com um dog muito bravo,grrr",
-      "price": 75.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":29,
-      "shop": 2,
-      "title": "Almofada Salsichinha Sapeca",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/a/l/almofada-dachshund-marrom-sepia_1.jpg",
-      "text": "Uma almofada divertida para quem ama baixinhos fofos e sapecas",
-      "price": 72.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":30,
-      "shop": 2,
-      "title": "Cão de pelúcia Fido Grande",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/cao-pelucia-fido-web.jpg",
-      "text": "Cão de pelúcia muito fofo",
-      "price": 48.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":31,
-      "shop": 2,
-      "title": "Cão de Pelúcia Patrick Bege",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/cao-pelucia-patrick-bege.jpg",
-      "text": "Um amigo fofinho para alegrar a sua casa",
-      "price": 64.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":32,
-      "shop": 2,
-      "title": "Cão de Feltro Tobias",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/cao-de-feltro-tobias.jpg",
-      "text": "Tobias é um cãozinho que vai deixar a sua casa muito mais divertida.",
-      "price": 36.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":33,
-      "shop": 2,
-      "title": "Caderno I Love Cats Pequeno",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/caderno-i-love-cats-pequeno.jpg",
-      "text": "Um caderno para quem ama Gatos",
-      "price": 25.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":34,
-      "shop": 2,
-      "title": "Caderno Bull Terrier Pequeno",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/caderno-e-caneca-bull-terrier.jpg",
-      "text": "Um caderninho fofo de Bull Terrier",
-      "price": 25.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":35,
-      "shop": 2,
-      "title": "Caderno Pitbull Pequeno",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/m/o/montagem-pitbull-web.jpg",
-      "text": "Um caderninho fofo de Pitbull",
-      "price": 25.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":36,
-      "shop": 2,
-      "title": "Caderno Pug Pequeno",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/caderno-bolso-pug-web_1.jpg",
-      "text": "Um presente perfeito para quem ama Pug",
-      "price": 25.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":37,
-      "shop": 2,
-      "title": "Caneca Pet - Mãe de gato",
-      "src": "https://http2.mlstatic.com/caneca-pet-me-de-gato-300ml-simas-D_NQ_NP_853942-MLB31691074447_082019-F.jpg",
-      "text": "Presente ideal para mamães de gatos",
-      "price": 15.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":38,
-      "shop": 2,
-      "title": "Caneca Pet - Mãe de Dog",
-      "src": "https://images.tcdn.com.br/img/img_prod/706889/caneca_pet_mae_de_cachorro_13985_1_20190807202813.jpg",
-      "text": "Presente perfeito para mamães de Dogs",
-      "price": 15.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":39,
-      "shop": 2,
-      "title": "Caneca Welsh Corgi",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/caneca-i-love-my-welsh-corgi.jpg",
-      "text": "O presente Ideal para amantes de Pets.",
-      "price": 38.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":40,
-      "shop": 2,
-      "title": "Caneca Buldogue Francês Fundo vermelho",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/a/caneca-buldogue-frances-vermelho_1.jpg",
-      "text": "Presente Ideal para Amantes de Pets",
-      "price": 38.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":41,
-      "shop": 2,
-      "title": "Chaveiro de Acrílico Golden Retriever",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/c/h/chaveiro-acr-golden-retriever.jpg",
-      "text": "Leve uma miniatura de um Golden consigo para todos os lugares.",
-      "price": 32.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":42,
-      "shop": 2,
-      "title": "Chaveiro de Feltro Gatinha Pepper",
-      "src": "https://www.forpetlovers.com.br/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/7/_/7.jpg",
-      "text": "Pepper é uma gatinha serelepe que adora passear.",
-      "price": 18.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":43,
-      "shop": 2,
-      "title": "Chaveiro e placa Mãe de Dog",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6390319/Chaveiro-e-placa-mae-de-dog.jpg?v=637001164673830000",
-      "text": "Uma dupla como você e seu dog merece um presente combinando.",
-      "price": 30.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":44,
-      "shop": 2,
-      "title": "Chaveiro e placa Mãe de Gato",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6315586/Chaveiro-e-placa-mae-de-gato.jpg?v=636995960446400000",
-      "text": "Uma dupla como você e seu gato merece um presente combinando",
-      "price": 30.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":45,
-      "shop": 2,
-      "title": "Luminaria Gato",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6503018/Luminaria-gato.jpg?v=637056082118600000",
-      "text": "Um gatinho para iluminar suas noites.",
-      "price": 170.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":46,
-      "shop": 2,
-      "title": "Luminaria Cachorro",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6503012/Luminaria-cachorro.jpg?v=637056082093100000",
-      "text": "Um doguinho para iluminar suas noites",
-      "price": 170.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":47,
-      "shop": 2,
-      "title": "Capacho Casa do Gato e do Humano",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6314271/Capacho-casa-do-gato-e-do-humano.jpg?v=636995953682200000",
-      "text": "Seja Bem Vindo à casa do gato e do seu humano.",
-      "price": 80.00,
-      "available": 4,
-      "discount": false
-    },
-    { 
-      "id":48,
-      "shop": 2,
-      "title": "Capacho Bagunça do Cachorro",
-      "src": "http://imaginarium.vteximg.com.br/arquivos/ids/6445715/Capacho-bagunca-do-cachorro.jpg?v=637027068548830000",
-      "text": "Não repare a bagunça a culpa é do cachorro",
-      "price": 80.00,
-      "available": 4,
-      "discount": false
+    {
+      "id": 8,
+      "userId": 534566,
+      "login": "login 8",
+      "password": "pass 8",
+      "service": "service 8",
+      "dateStamp": 0
     }
   ]
 }

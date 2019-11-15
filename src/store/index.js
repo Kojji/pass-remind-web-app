@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import Entries from './modules/entries'
-import EntryListModel from './modules/entryListModel'
+import Entries from './modules/storeRegistries'
 import ToolBarFunctions from './modules/storeToolbar'
 import UserFunctions from './modules/storeUser'
 
@@ -17,7 +16,6 @@ export default new Vuex.Store({
   },
   modules: {
     Entries,
-    EntryListModel,
     ToolBarFunctions,
     UserFunctions,
   }

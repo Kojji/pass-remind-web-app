@@ -46,7 +46,7 @@ const actions = {
     return new Promise ((res, rej) => {
       Axios.get(`http://localhost:3000/users?loginId=${state.userId}`)
       .then((data) => {
-        commit("setUserData", data.data)
+        commit("setUserData", data.data[0])
         
         res()
       }).catch((err) =>{
