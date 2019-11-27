@@ -16,21 +16,28 @@
       </v-toolbar-items>
       <template #extension v-if="logged">
         <v-toolbar-items >
-          <v-btn text><v-icon>{{ toolBarIcons.addIcon }}</v-icon></v-btn>
+          <v-btn text @click="addEntry"><v-icon>{{ toolBarIcons.addIcon }}</v-icon></v-btn>
           <v-btn text @click="deslogar"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
         </v-toolbar-items>
       </template>
     </v-app-bar>
+    <addNewEntry v-model="addNewDialog" />
   </v-layout>
 </template>
 
 <script>
 import {mapGetters} from "vuex"
+import addNewEntry from "../components/AddNewEntry"
 
 export default {
   name: "ToolBar",
+  components:{
+    addNewEntry
+  },
   data() {
     return {
+      newItem:{},
+      addNewDialog: false,
       };
   },
   mounted() {
@@ -54,7 +61,10 @@ export default {
             this.$router.push('/login')
           })
       }
-    }
+    },
+    addEntry() {
+      this.addNewDialog = true
+    },
   }
 };
 </script>

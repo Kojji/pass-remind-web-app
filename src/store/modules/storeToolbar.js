@@ -2,7 +2,7 @@ const state = {
   toolBarIcons: {
     helpIcon: "mdi-help-circle",
     exitIcon: "mdi-exit-to-app",
-    addIcon: "mdi-key-plus"
+    addIcon: "mdi-plus"
   },
   redirects: {
     redirectLogin: "/login",
