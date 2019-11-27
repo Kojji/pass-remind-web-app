@@ -13,7 +13,7 @@
               ></v-text-field>
               <v-text-field
                 append-icon="mdi-key"
-                @click:append="passwordGenerator"
+                @click:append.stop="passwordGenerator"
                 v-model="newItem.password"
                 label="Senha"
                 required
@@ -25,9 +25,23 @@
               ></v-text-field>
             </v-col>
             <v-col sm="6" class="d-none d-sm-flex">
-              <v-text-field
-                
-              ></v-text-field>
+              <v-row>
+                <v-col cols="12">
+                  <v-slider
+                    v-model="passLength"
+                    :max="maxLength"
+                    :min="minLength"
+                    thumb-color="orange lighten-1"
+                    color="orange lighten-1"
+                    thumb-label="always"
+                    label="Tamanho"
+                  ></v-slider>
+                  <v-checkbox color="orange lighten-2" class="ma-0"  v-model="configArray" label="Uppercase Letters" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Lowercase Letters" value="abcdefghijklmnopqrstuvwxyz"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Numbers" value="0123456789"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Symbols" value=" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"></v-checkbox>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
@@ -59,20 +73,39 @@ export default {
   },
   data() {
     return {
-      newItem:{},
+      newItem:{
+        password: null,
+      },
+      passLength: 15,
+      configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
+      minLength: 5,
+      maxLength: 30
       };
   },
   methods: {
     saveNewEntry() {
       // eslint-disable-next-line
       console.log(this.newItem)
+      // vuex para verificar nova senha
+      // vuex para gravar nova senha
+
+      this.closeAddDialog()
     },
     closeAddDialog() {
       this.openDialog = false
-      this.newItem = {}
+      this.newItem = { password: null }
     },
     passwordGenerator() {
-      //get vuex config info and generate the password
+      let all = '';
+      for(let contador = 0; contador <= this.configArray.length -1; contador++){
+        all+=this.configArray[contador];
+      }
+      var password = '';
+      for (var index = 0; index < this.passLength; index++) {
+          var character = Math.floor(Math.random() * all.length);
+          password += all.substring(character, character + 1);
+      }
+      this.newItem.password = password;
     }
   }
 };
