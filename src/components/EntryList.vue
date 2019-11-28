@@ -1,10 +1,19 @@
 <template>
   <v-card class="mx-auto" max-width="820">
-    <v-card-title>teste</v-card-title>
+    <v-card-title>
+      <v-text-field
+        v-model="search"
+        clearable
+        solo-inverted
+        prepend-inner-icon="mdi-magnify"
+        label="Procurar"
+      ></v-text-field>
+    </v-card-title>
     <v-data-iterator
       :items="registriesArray"
       :items-per-page.sync="itemsPerPage"
       :footer-props="footerProps"
+      :search="search"
     >
       <template v-slot:default="props">
         <v-row>
@@ -49,7 +58,8 @@ export default {
         itemsPerPageOptions: [5,10,20,-1],
         itemsPerPageText: 'Itens por página'
       },
-      editItemDialog: {}
+      editItemDialog: {},
+      search: ''
     };
   },
   computed: {
