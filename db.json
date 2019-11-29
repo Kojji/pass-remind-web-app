@@ -35,27 +35,11 @@
   ],
   "Registry": [
     {
-      "id": 1,
-      "userId": 534566,
-      "login": "login 1",
-      "password": "pass 1",
-      "service": "service 1",
-      "dateStamp": 0
-    },
-    {
       "id": 2,
       "userId": 534566,
       "login": "login 2",
       "password": "pass 2",
       "service": "service 2",
-      "dateStamp": 0
-    },
-    {
-      "id": 3,
-      "userId": 534566,
-      "login": "login 3",
-      "password": "pass 3",
-      "service": "service 3",
       "dateStamp": 0
     },
     {

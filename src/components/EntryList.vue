@@ -140,8 +140,7 @@ export default {
       Object.assign(this.editItemDialog,entry)
     },
     deleteItem(entry) {
-      // eslint-disable-next-line
-      console.log(entry)
+      if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) this.$store.dispatch('deleteEntry', entry)
     },
     saveEditEntry() {
       // eslint-disable-next-line

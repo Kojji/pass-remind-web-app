@@ -26,6 +26,16 @@ const actions = {
       // eslint-disable-next-line
       console.log(err)
     })
+  },
+  deleteEntry({dispatch}, userData) {
+    axios.delete(`http://localhost:3000/registry/${userData.id}`, )
+    .then(()=>{
+      dispatch('getUserList', {id: userData.userId})
+    }).catch((err)=>{
+      alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
+      // eslint-disable-next-line
+      console.log(err)
+    })
   }
 }
 
