@@ -115,7 +115,9 @@ export default {
         itemsPerPageOptions: [5,10,20,-1],
         itemsPerPageText: 'Itens por página'
       },
-      editItemDialog: {},
+      editItemDialog: {
+        password: null
+      },
       search: '',
       openEdit: false,
       passLength: 15,
@@ -143,10 +145,10 @@ export default {
       if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) this.$store.dispatch('deleteEntry', entry)
     },
     saveEditEntry() {
-      // eslint-disable-next-line
-      console.log(this.editItemDialog)
+      this.editItemDialog.dateStamp = new Date().getTime()
+      this.$store.dispatch('editEntry', this.editItemDialog)
+      
       // vuex para verificar nova senha
-      // vuex para gravar nova senha
 
       this.closeEditDialog()
     },

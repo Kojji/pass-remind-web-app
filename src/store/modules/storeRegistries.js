@@ -28,11 +28,21 @@ const actions = {
     })
   },
   deleteEntry({dispatch}, userData) {
-    axios.delete(`http://localhost:3000/registry/${userData.id}`, )
+    axios.delete(`http://localhost:3000/registry/${userData.id}`)
     .then(()=>{
       dispatch('getUserList', {id: userData.userId})
     }).catch((err)=>{
       alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
+      // eslint-disable-next-line
+      console.log(err)
+    })
+  },
+  editEntry({dispatch}, userData) {
+    axios.patch(`http://localhost:3000/registry/${userData.id}`, userData)
+    .then(()=>{
+      dispatch('getUserList', {id: userData.userId})
+    }).catch((err)=>{
+      alert("Houve um erro ao tentar modificar uma senha, por favor tente novamente mais tarde.")
       // eslint-disable-next-line
       console.log(err)
     })
