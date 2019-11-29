@@ -1,50 +1,104 @@
 <template>
-  <v-card class="mx-auto" max-width="820">
-    <v-card-title>
-      <v-text-field
-        v-model="search"
-        clearable
-        solo-inverted
-        prepend-inner-icon="mdi-magnify"
-        label="Procurar"
-      ></v-text-field>
-    </v-card-title>
-    <v-data-iterator
-      :items="registriesArray"
-      :items-per-page.sync="itemsPerPage"
-      :footer-props="footerProps"
-      :search="search"
-    >
-      <template v-slot:default="props">
-        <v-row>
-          <v-col
-            v-for="entry in props.items"
-            :key="entry.id"
-            cols="12"
-          >
-            <v-card
-              @click="editItem(entry)">
+  <div>
+    <v-card class="mx-auto" max-width="860">
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          clearable
+          solo-inverted
+          prepend-inner-icon="mdi-magnify"
+          label="Procurar"
+        ></v-text-field>
+      </v-card-title>
+      <v-data-iterator
+        :items="registriesArray"
+        :items-per-page.sync="itemsPerPage"
+        :footer-props="footerProps"
+        :search="search"
+      >
+        <template v-slot:default="props">
+          <v-row>
+            <v-col
+              v-for="entry in props.items"
+              :key="entry.id"
+              cols="12"
+            >
+              <v-card
+                @click="editItem(entry)">
+                <v-row>
+                  <v-col md="4" sm="7">
+                    {{ entry.login }}
+                  </v-col>
+                  <v-col md="3" sm="5">
+                    {{ entry.password }}
+                  </v-col>
+                  <v-col md="3" sm="6">
+                    {{ entry.service }}
+                  </v-col>
+                  <v-col md="2" sm="6">
+                    <v-btn text rounded @click.stop="deleteItem(entry)" color="pink"><v-icon>mdi-delete</v-icon></v-btn>
+                  </v-col>
+                </v-row>
+
+              </v-card>
+            </v-col>
+          </v-row>
+        </template>
+      </v-data-iterator>
+    </v-card>
+    <v-dialog v-model="openEdit" max-width="580">
+      <v-card class="mx-auto">
+        <v-card-title>Editar Senha</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col xs="12" sm="6">
+              <v-text-field
+                v-model="editItemDialog.login"
+                label="Login"
+                required
+              ></v-text-field>
+              <v-text-field
+                append-icon="mdi-key"
+                @click:append.stop="passwordGenerator"
+                v-model="editItemDialog.password"
+                label="Senha"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="editItemDialog.service"
+                label="Serviço"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col sm="6" class="d-none d-sm-flex">
               <v-row>
-                <v-col md="4" sm="7">
-                  {{ entry.login }}
-                </v-col>
-                <v-col md="3" sm="5">
-                  {{ entry.password }}
-                </v-col>
-                <v-col md="3" sm="6">
-                  {{ entry.service }}
-                </v-col>
-                <v-col md="2" sm="6">
-                  <v-btn text rounded @click.stop="deleteItem(entry)" color="pink"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-col cols="12">
+                  <v-slider
+                    v-model="passLength"
+                    :max="maxLength"
+                    :min="minLength"
+                    thumb-color="orange lighten-1"
+                    color="orange lighten-1"
+                    thumb-label="always"
+                    label="Tamanho"
+                  ></v-slider>
+                  <v-checkbox color="orange lighten-2" class="ma-0"  v-model="configArray" label="Uppercase Letters" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Lowercase Letters" value="abcdefghijklmnopqrstuvwxyz"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Numbers" value="0123456789"></v-checkbox>
+                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Symbols" value=" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"></v-checkbox>
                 </v-col>
               </v-row>
-              
-            </v-card>
-          </v-col>
-        </v-row>
-      </template>
-    </v-data-iterator>
-  </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="red darken-1" @click="closeEditDialog">Cancel</v-btn>
+          <v-btn text color="green darken-1" @click="saveEditEntry">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -59,7 +113,12 @@ export default {
         itemsPerPageText: 'Itens por página'
       },
       editItemDialog: {},
-      search: ''
+      search: '',
+      openEdit: false,
+      passLength: 15,
+      configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
+      minLength: 5,
+      maxLength: 30
     };
   },
   computed: {
@@ -74,11 +133,38 @@ export default {
   },
   methods: {
     editItem(entry) {
-      this.editItemDialog = entry
+      this.openEdit = true
+      Object.assign(this.editItemDialog,entry)
+      // eslint-disable-next-line
+      console.log(this.editItemDialog)
     },
     deleteItem(entry) {
       // eslint-disable-next-line
       console.log(entry)
+    },
+    saveEditEntry() {
+      // eslint-disable-next-line
+      console.log(this.editItemDialog)
+      // vuex para verificar nova senha
+      // vuex para gravar nova senha
+
+      this.closeEditDialog()
+    },
+    closeEditDialog() {
+      this.openEdit = false
+      this.editItemDialog = { password: null }
+    },
+    passwordGenerator() {
+      let all = '';
+      for(let contador = 0; contador <= this.configArray.length -1; contador++){
+        all+=this.configArray[contador];
+      }
+      var password = '';
+      for (var index = 0; index < this.passLength; index++) {
+          var character = Math.floor(Math.random() * all.length);
+          password += all.substring(character, character + 1);
+      }
+      this.editItemDialog.password = password;
     }
   }
 }
