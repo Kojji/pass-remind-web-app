@@ -10,7 +10,7 @@
         outlined
         tile
       >
-        Página do Usuário
+        Página do Usuário para configurações
       </v-card>
     </v-col>
   </div>

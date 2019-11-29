@@ -12,7 +12,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
-        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userData.userName }}</v-btn>
+        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userData.userName }}</v-btn><!-- usar para direcionar a uma pagina de configurações do usuario -->
         <v-btn text @click="deslogar" v-show = "logged"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
       </v-toolbar-items>
     </v-app-bar>
