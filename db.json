@@ -37,10 +37,10 @@
     {
       "id": 2,
       "userId": 534566,
-      "login": "login 2",
+      "login": "login 3",
       "password": "pass 2",
-      "service": "service 2",
-      "dateStamp": 0
+      "service": "serviceTEST",
+      "dateStamp": 1574994966176
     },
     {
       "id": 4,
@@ -75,22 +75,6 @@
       "dateStamp": 0
     },
     {
-      "id": 8,
-      "userId": 534566,
-      "login": "login 8",
-      "password": "pass 8",
-      "service": "service 8",
-      "dateStamp": 0
-    },
-    {
-      "password": "fsdfsdfs",
-      "login": "sdfsd",
-      "service": "dfsdf",
-      "userId": 534566,
-      "dateStamp": 1574991147482,
-      "id": 9
-    },
-    {
       "password": "ere",
       "login": "rer",
       "service": "er",
@@ -113,6 +97,22 @@
       "userId": 290347,
       "dateStamp": 1574991476632,
       "id": 12
+    },
+    {
+      "password": "asd",
+      "login": "asd",
+      "service": "asd",
+      "userId": 290347,
+      "dateStamp": 1574994138848,
+      "id": 13
+    },
+    {
+      "password": null,
+      "login": "rer",
+      "service": "er",
+      "userId": 290347,
+      "dateStamp": 1574994159199,
+      "id": 14
     }
   ]
 }

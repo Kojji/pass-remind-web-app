@@ -46,6 +46,16 @@ const actions = {
       // eslint-disable-next-line
       console.log(err)
     })
+  },
+  verifyIfExist({state}, userData) {
+    return new Promise ((res,rej) => {
+      state.registriesArray.find(obj=>{
+        if(obj.login == userData.login && obj.service == userData.service) {
+          rej()
+        }
+      })
+      res()
+    })
   }
 }
 

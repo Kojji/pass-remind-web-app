@@ -145,12 +145,15 @@ export default {
       if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) this.$store.dispatch('deleteEntry', entry)
     },
     saveEditEntry() {
-      this.editItemDialog.dateStamp = new Date().getTime()
-      this.$store.dispatch('editEntry', this.editItemDialog)
-      
-      // vuex para verificar nova senha
+      this.$store.dispatch('verifyIfExist', this.editItemDialog)
+      .then(()=>{
+        this.editItemDialog.dateStamp = new Date().getTime()
+        this.$store.dispatch('editEntry', this.editItemDialog)
+        this.closeEditDialog()
+      }).catch(()=>{
+        alert("Já há um registro existente com o mesmo login e mesmo serviço ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")
+      })
 
-      this.closeEditDialog()
     },
     closeEditDialog() {
       this.openEdit = false

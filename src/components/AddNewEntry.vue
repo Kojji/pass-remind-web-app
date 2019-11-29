@@ -89,10 +89,14 @@ export default {
   methods: {
     saveNewEntry() {
       let objToPass = Object.assign(this.newItem, {userId: this.userData.id})
-      // vuex para verificar nova senha
-      this.$store.dispatch('saveNewEntry', objToPass)
+      this.$store.dispatch('verifyIfExist', objToPass)
+      .then(()=>{
+        this.$store.dispatch('saveNewEntry', objToPass)
+        this.closeAddDialog()
+      }).catch(()=>{
+        alert("Já há um registro existente com o mesmo login e mesmo serviço ao qual você está tentando criar. Modifique um dos campos deste registro ou edite o registro existente")
+      })
 
-      this.closeAddDialog()
     },
     closeAddDialog() {
       this.openDialog = false
@@ -109,7 +113,8 @@ export default {
           password += all.substring(character, character + 1);
       }
       this.newItem.password = password;
-    }
+    },
+    
   }
 };
 </script>
