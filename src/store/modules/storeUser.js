@@ -3,14 +3,14 @@ import Axios from "axios"
 const state = {
   logged: false,
   userId: null,
-  userData: null,
+  userData: {userName :null},
 }
 const mutations = {
   logUser(state) { state.logged = true },
   logoffUser(state) { 
     state.logged = false
     state.userId = null
-    state.userData = null
+    state.userData = {userName :null}
   },
   userId(state, userData) { state.userId = userData},
   setUserData(state, userData) {state.userData = userData}

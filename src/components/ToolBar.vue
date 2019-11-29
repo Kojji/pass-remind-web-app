@@ -5,39 +5,27 @@
     dark
     color="orange darken-1"
     >
-      <v-toolbar-title class="headline text-uppercase" id="logoPassRemind" @click="redirectHome">
+      <v-toolbar-title class="headline text-uppercase" id="logoPassRemind">
         <span>Pass</span>
         <span class="font-weight-light">Remind</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
-        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">Usuário</v-btn>
+        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userData.userName }}</v-btn>
+        <v-btn text @click="deslogar" v-show = "logged"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
       </v-toolbar-items>
-      <template #extension v-if="logged">
-        <v-toolbar-items >
-          <v-btn text @click="addEntry"><v-icon>{{ toolBarIcons.addIcon }}</v-icon></v-btn>
-          <v-btn text @click="deslogar"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
-        </v-toolbar-items>
-      </template>
     </v-app-bar>
-    <addNewEntry v-model="addNewDialog" />
   </v-layout>
 </template>
 
 <script>
 import {mapGetters} from "vuex"
-import addNewEntry from "../components/AddNewEntry"
 
 export default {
   name: "ToolBar",
-  components:{
-    addNewEntry
-  },
   data() {
     return {
-      newItem:{},
-      addNewDialog: false,
       };
   },
   mounted() {
@@ -47,13 +35,11 @@ export default {
       "redirects",
       "logged",
       "toolBarIcons",
+      "userData"
     ])
     
   },
   methods: {
-    redirectHome() {
-      this.$router.push('/')
-    },
     deslogar() {
       if(confirm("Tem certeza que deseja sair do sistema?")) {
         this.$store.dispatch('userLogoff')
@@ -62,15 +48,9 @@ export default {
           })
       }
     },
-    addEntry() {
-      this.addNewDialog = true
-    },
   }
 };
 </script>
 <style scoped>
-#logoPassRemind {
-  cursor: pointer;
-}
 </style>
 

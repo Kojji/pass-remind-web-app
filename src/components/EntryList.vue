@@ -1,15 +1,29 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="860">
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          clearable
-          solo-inverted
-          prepend-inner-icon="mdi-magnify"
-          label="Procurar"
-        ></v-text-field>
-      </v-card-title>
+      <v-card-actions>
+        <v-row justify-self="center" class="pa-4" >
+          <v-text-field
+            v-model="search"
+            clearable
+            solo-inverted
+            
+            prepend-inner-icon="mdi-magnify"
+            label="Procurar"
+          ></v-text-field>
+          <v-btn 
+            fab
+            small
+            rounded
+            class="ml-3 mt-1"
+            dark
+            color="orange darken-1"
+            @click="addEntry"
+          >
+            <v-icon>{{ toolBarIcons.addIcon }}</v-icon>
+          </v-btn>
+        </v-row>
+      </v-card-actions>
       <v-data-iterator
         :items="registriesArray"
         :items-per-page.sync="itemsPerPage"
@@ -101,13 +115,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <addNewEntry v-model="addNewDialog" />
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import addNewEntry from "../components/AddNewEntry"
 
 export default {
+  components:{
+    addNewEntry
+  },
   data() {
     return {
       itemsPerPage: 10,
@@ -123,13 +142,16 @@ export default {
       passLength: 15,
       configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
       minLength: 5,
-      maxLength: 30
+      maxLength: 30,
+      newItem:{},
+      addNewDialog: false,
     };
   },
   computed: {
     ...mapGetters([
       "registriesArray",
       "userData",
+      "toolBarIcons"
     ])
   },
   mounted() {
@@ -137,6 +159,9 @@ export default {
     this.$store.dispatch('getUserList', this.userData)
   },
   methods: {
+    addEntry() {
+      this.addNewDialog = true
+    },
     editItem(entry) {
       this.openEdit = true
       Object.assign(this.editItemDialog,entry)
