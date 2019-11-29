@@ -17,29 +17,32 @@
         :search="search"
       >
         <template v-slot:default="props">
-          <v-row>
+          <v-row 
+            no-gutters
+          >
             <v-col
               v-for="entry in props.items"
               :key="entry.id"
               cols="12"
+              class="mt-2"
             >
               <v-card
-                @click="editItem(entry)">
+                @click="editItem(entry)"
+              >
                 <v-row>
-                  <v-col md="4" sm="7">
-                    {{ entry.login }}
+                  <v-col class="pl-5" md="4" sm="7" align-self="center">
+                    <span >{{ entry.login }}</span>
                   </v-col>
-                  <v-col md="3" sm="5">
+                  <v-col md="3" sm="5" align-self="center">
                     {{ entry.password }}
                   </v-col>
-                  <v-col md="3" sm="6">
+                  <v-col md="3" sm="6" align-self="center">
                     {{ entry.service }}
                   </v-col>
                   <v-col md="2" sm="6">
                     <v-btn text rounded @click.stop="deleteItem(entry)" color="pink"><v-icon>mdi-delete</v-icon></v-btn>
                   </v-col>
                 </v-row>
-
               </v-card>
             </v-col>
           </v-row>
@@ -135,8 +138,6 @@ export default {
     editItem(entry) {
       this.openEdit = true
       Object.assign(this.editItemDialog,entry)
-      // eslint-disable-next-line
-      console.log(this.editItemDialog)
     },
     deleteItem(entry) {
       // eslint-disable-next-line
