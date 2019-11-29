@@ -47,10 +47,20 @@ const actions = {
       console.log(err)
     })
   },
-  verifyIfExist({state}, userData) {
+  verifyIfExistNew({state}, userData) {
     return new Promise ((res,rej) => {
       state.registriesArray.find(obj=>{
         if(obj.login == userData.login && obj.service == userData.service) {
+          rej()
+        }
+      })
+      res()
+    })
+  },
+  verifyIfExistEdit({state}, userData) {
+    return new Promise ((res,rej) => {
+      state.registriesArray.find(obj=>{
+        if(obj.login == userData.login && obj.service == userData.service && obj.id != userData.id) {
           rej()
         }
       })

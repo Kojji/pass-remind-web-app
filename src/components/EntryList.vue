@@ -145,7 +145,7 @@ export default {
       if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) this.$store.dispatch('deleteEntry', entry)
     },
     saveEditEntry() {
-      this.$store.dispatch('verifyIfExist', this.editItemDialog)
+      this.$store.dispatch('verifyIfExistEdit', this.editItemDialog)
       .then(()=>{
         this.editItemDialog.dateStamp = new Date().getTime()
         this.$store.dispatch('editEntry', this.editItemDialog)
