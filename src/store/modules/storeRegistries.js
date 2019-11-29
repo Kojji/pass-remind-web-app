@@ -14,6 +14,18 @@ const actions = {
     .then((data) => {
       commit("setRegistriesArray", data.data)
     })
+  },
+  saveNewEntry({dispatch},userData) {
+    let timestamp = new Date().getTime()
+    let newObject = Object.assign(userData,{dateStamp: timestamp})
+    axios.post(`http://localhost:3000/registry`, newObject)
+    .then(()=>{
+      dispatch('getUserList', {id: userData.userId})
+    }).catch((err)=>{
+      alert("Houve um erro ao tentar salvar uma nova senha, por favor tente novamente mais tarde.")
+      // eslint-disable-next-line
+      console.log(err)
+    })
   }
 }
 

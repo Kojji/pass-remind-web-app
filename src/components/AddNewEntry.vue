@@ -56,12 +56,16 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex"
 export default {
   name: "addNewEntry",
   props: {
     value: Boolean
   },
   computed:{
+    ...mapGetters([
+      "userData",
+    ]),
     openDialog: {
       get () {
         return this.value
@@ -84,10 +88,9 @@ export default {
   },
   methods: {
     saveNewEntry() {
-      // eslint-disable-next-line
-      console.log(this.newItem)
+      let objToPass = Object.assign(this.newItem, {userId: this.userData.id})
       // vuex para verificar nova senha
-      // vuex para gravar nova senha
+      this.$store.dispatch('saveNewEntry', objToPass)
 
       this.closeAddDialog()
     },
