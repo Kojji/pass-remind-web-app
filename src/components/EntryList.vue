@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-card class="mx-auto" max-width="860">
       <v-card-actions>
         <v-row justify-self="center" class="pa-4" >
@@ -31,32 +31,43 @@
         :search="search"
       >
         <template v-slot:default="props">
-          <v-row 
-            no-gutters
-          >
+          <v-row>
             <v-col
               v-for="entry in props.items"
               :key="entry.id"
               cols="12"
-              class="mt-2"
+              sm="6"
+              md="4"
+              lg="3"
             >
               <v-card
                 @click="editItem(entry)"
               >
-                <v-row>
-                  <v-col class="pl-5" md="4" sm="7" align-self="center">
-                    <span >{{ entry.login }}</span>
-                  </v-col>
-                  <v-col md="3" sm="5" align-self="center">
-                    {{ entry.password }}
-                  </v-col>
-                  <v-col md="3" sm="6" align-self="center">
-                    {{ entry.service }}
-                  </v-col>
+                <v-card-title class="subheading font-weight-bold">{{ entry.service }}</v-card-title>
+
+                <v-divider></v-divider>
+
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content class="align-start">{{ entry.login }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content class="align-start">
+                      <v-text-field
+                        class="passCard"
+                        type="password"
+                        :value="entry.password"
+                        append-icon="mdi-content-copy"
+                        @click:append.stop="copyPassword(entry.password)">
+                      </v-text-field>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <!-- <v-row>
                   <v-col md="2" sm="6">
                     <v-btn text rounded @click.stop="deleteItem(entry)" color="pink"><v-icon>mdi-delete</v-icon></v-btn>
                   </v-col>
-                </v-row>
+                </v-row> -->
               </v-card>
             </v-col>
           </v-row>
@@ -116,7 +127,7 @@
       </v-card>
     </v-dialog>
     <addNewEntry v-model="addNewDialog" />
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -129,9 +140,9 @@ export default {
   },
   data() {
     return {
-      itemsPerPage: 10,
+      itemsPerPage: 8,
       footerProps: {
-        itemsPerPageOptions: [5,10,20,-1],
+        itemsPerPageOptions: [8,12,15,-1],
         itemsPerPageText: 'Itens por página'
       },
       editItemDialog: {
@@ -159,6 +170,11 @@ export default {
     this.$store.dispatch('getUserList', this.userData)
   },
   methods: {
+    copyPassword(password) {
+      //eslint-disable-next-line
+      console.log(password);
+      //função para colocar a senha no buffer de copiar e colar
+    },
     addEntry() {
       this.addNewDialog = true
     },
@@ -199,3 +215,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-text-field.passCard > .v-input__control > .v-input__slot:before {
+  border-style: none;
+}
+.v-text-field.passCard > .v-input__control > .v-input__slot:after {
+  border-style: none;
+}
+</style>
