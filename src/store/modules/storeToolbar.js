@@ -6,6 +6,7 @@ const state = {
   },
   redirects: {
     redirectLogin: "/login",
+    redirectUserPage: "/user"
   },
   
 }
