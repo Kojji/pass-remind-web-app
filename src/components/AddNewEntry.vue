@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     saveNewEntry() {
+      
       let objToPass = Object.assign(this.newItem, {userId: this.userData.id})
       this.$store.dispatch('verifyIfExistNew', objToPass)
       .then(()=>{

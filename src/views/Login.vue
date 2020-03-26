@@ -22,6 +22,7 @@
                 v-model="password"
                 label="Password"
                 required
+                @keydown.enter="validate"
                 @click:append="show1 = !show1"
               ></v-text-field>
               <v-btn

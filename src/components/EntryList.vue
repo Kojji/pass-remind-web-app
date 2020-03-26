@@ -92,7 +92,7 @@ export default {
     return {
       itemsPerPage: 8,
       footerProps: {
-        itemsPerPageOptions: [8,12,15,-1],
+        itemsPerPageOptions: [6,8,12,18,-1],
         itemsPerPageText: 'Itens por página'
       },
       editItemDialog: {
