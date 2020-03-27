@@ -5,6 +5,7 @@ const state = {
   userId: null,
   userData: {userName :null},
 }
+
 const mutations = {
   logUser(state) { state.logged = true },
   logoffUser(state) { 
@@ -15,6 +16,7 @@ const mutations = {
   userId(state, userData) { state.userId = userData},
   setUserData(state, userData) {state.userData = userData}
 }
+
 const actions = {
   userLogin({commit}, loginData) {
     return new Promise ((res, rej) => {
@@ -56,12 +58,21 @@ const actions = {
       })
     })
   },
+  // eslint-disable-next-line
+  doAuthCheck({commit, state}) {
+    // eslint-disable-next-line
+    return new Promise((res, rej)=>{
+      res()
+    })
+  }
 }
+
 const getters = {
   logged(state) { return state.logged },
   userId(state) { return state.userId },
   userData(state) { return state.userData }
 }
+
 export default {
   state,
   mutations,
