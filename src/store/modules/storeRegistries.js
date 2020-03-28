@@ -1,4 +1,5 @@
 import axios from 'axios'
+//import firebase from 'firebase'
 
 const state = {
   registriesArray: []
@@ -14,8 +15,10 @@ const actions = {
     .then((data) => {
       commit("setRegistriesArray", data.data)
     })
+    
   },
   saveNewEntry({dispatch},userData) {
+    
     let timestamp = new Date().getTime()
     let newObject = Object.assign(userData,{dateStamp: timestamp})
     axios.post(`http://localhost:3000/registry`, newObject)
@@ -26,6 +29,7 @@ const actions = {
       // eslint-disable-next-line
       console.log(err)
     })
+    
   },
   deleteEntry({dispatch}, userData) {
     axios.delete(`http://localhost:3000/registry/${userData.id}`)

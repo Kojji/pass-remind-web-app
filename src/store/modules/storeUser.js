@@ -5,7 +5,7 @@ import router from '../../router'
 const state = {
   logged: false,
   userId: null,
-  userData: {userName :null},
+  userData: {displayName :null},
 }
 
 const mutations = {
@@ -21,6 +21,7 @@ const mutations = {
 
 const actions = {
   userLogin({commit}, userData) {
+    var firestoreDB = firebase.firestore();
     return new Promise ((res, rej) => {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(()=>{
@@ -30,6 +31,11 @@ const actions = {
           console.log(result)
           commit("logUser")
           commit('userId', result.user.uid)
+          firestoreDB.collection("users").doc(result.user.uid).get()
+          .then(doc => {
+            commit("setUserData", doc.data())
+          })
+          //get firebase user info e commit("setUserData", data.data[0])
           router.push('/'); 
           res()
         }).catch(error => {
@@ -69,12 +75,17 @@ const actions = {
     })
   },
   doAuthCheck({commit}) {
+    var firestoreDB = firebase.firestore();
     // eslint-disable-next-line
     return new Promise((res, rej)=>{
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           commit("logUser")
           commit('userId', user.uid)
+          firestoreDB.collection("users").doc(user.uid).get()
+          .then(doc => {
+            commit("setUserData", doc.data())
+          })
           res(true)
         } else {
           res(false)
@@ -84,6 +95,7 @@ const actions = {
   },
   // eslint-disable-next-line
   storeGoogleLogin({commit,dispatch}) {
+    var firestoreDB = firebase.firestore();
     return new Promise((resolve, reject) => {
       let errorMessage = null;
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
@@ -97,18 +109,26 @@ const actions = {
           console.log(result)
           commit("logUser")
           commit('userId', result.user.uid)
-          /* let dataObj = {
-            displayName: result.user.providerData[0].displayName,
-            email: result.user.providerData[0].email,
-            phoneNumber: result.user.providerData[0].phoneNumber,
-            photoURL: result.user.providerData[0].photoURL,
-            providerId: result.user.providerData[0].providerId,
-            uid: result.user.providerData[0].uid
-          }
-          localStorage.setItem('userInfo', JSON.stringify(dataObj));
-          dispatch('editUserInfo',dataObj).then(()=>{
-            dispatch('storeGetEntries');
-          }); */
+          firestoreDB.collection("users").doc(result.user.uid).get()
+          .then(doc => {
+            let infoObj = {}
+            if(!doc.exists) {
+              infoObj = {
+                displayName: result.user.displayName,
+                email: result.user.email,
+                phoneNumber: result.user.phoneNumber,
+                photoURL: result.user.photoURL,
+                uid: result.user.uid
+              }
+              firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
+              commit("setUserData", infoObj)
+            } else {
+              commit("setUserData", doc.data())
+            }
+          })
+          
+          
+          //localStorage.setItem('userInfo', JSON.stringify(dataObj));
           router.push('/'); 
           resolve();
         })
@@ -123,12 +143,22 @@ const actions = {
     })
   },
   userSignIn({commit},userData) {
+    var firestoreDB = firebase.firestore();
     firebase.auth().createUserWithEmailAndPassword(userData.login, userData.password)
     .then(result => {
       // eslint-disable-next-line
       console.log(result)
       commit("logUser")
       commit('userId', result.user.uid)
+      let infoObj = {
+        displayName: '',
+        email: userData.login,
+        phoneNumber: null,
+        photoURL: null,
+        uid: result.user.uid
+      }
+      firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
+      commit("setUserData", infoObj)
       router.push('/')
     }).catch(error => {
       // eslint-disable-next-line

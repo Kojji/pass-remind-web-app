@@ -5,14 +5,14 @@
     dark
     color="orange darken-1"
     >
-      <v-toolbar-title class="headline text-uppercase" id="logoPassRemind">
+      <v-toolbar-title @click="redirectHome" class="headline text-uppercase" id="logoPassRemind">
         <span>Pass</span>
         <span class="font-weight-light">Remind</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
-        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userData.userName }}</v-btn><!-- usar para direcionar a uma pagina de configurações do usuario -->
+        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userName() }}</v-btn>
         <v-btn text @click="deslogar" v-show = "logged"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -36,10 +36,13 @@ export default {
       "logged",
       "toolBarIcons",
       "userData"
-    ])
+    ]),
     
   },
   methods: {
+    redirectHome() {
+      this.$router.push('/');
+    },
     deslogar() {
       if(confirm("Tem certeza que deseja sair do sistema?")) {
         this.$store.dispatch('userLogoff')
@@ -48,9 +51,18 @@ export default {
           })
       }
     },
+    userName() {
+      if(this.userData.displayName === null || !this.userData.displayName || this.userData.displayName === '') {
+        return 'Usuário'
+      } else {
+        return this.userData.displayName
+      }
+    }
   }
 };
 </script>
 <style scoped>
+#logoPassRemind {
+  cursor: pointer;
+}
 </style>
-
