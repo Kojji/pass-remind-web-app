@@ -20,7 +20,7 @@
                   ></v-text-field>
                   <v-text-field
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required]"
+                    :rules="passwordRules"
                     :type="show1 ? 'text' : 'password'"
                     v-model="password"
                     label="Senha"
@@ -30,7 +30,7 @@
                     class="mb-4"
                   ></v-text-field>
                   <v-text-field
-                    :rules="[rules.required]"
+                    :rules="passwordRules"
                     :type="show1 ? 'text' : 'password'"
                     v-model="confirmPassword"
                     label="Confirmar Senha"
@@ -80,10 +80,10 @@ export default {
       ],
       password: '',
       confirmPassword: '',
-      rules: {
-        required: value => !!value || 'Campo Obrigatório',
-        min: v => v.length >= 4 || 'Minimo 4 caracteres'
-      },
+      passwordRules: [
+        v => !!v || 'Campo Obrigatório',
+        v => v.length >= 4 || 'Minimo 4 caracteres'
+      ],
     }
   },
   methods: {

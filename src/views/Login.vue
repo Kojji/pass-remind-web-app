@@ -19,7 +19,7 @@
                   ></v-text-field>
                   <v-text-field
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required]"
+                    :rules="passwordRules"
                     :type="show1 ? 'text' : 'password'"
                     v-model="password"
                     label="Senha"
@@ -97,10 +97,10 @@ export default {
         v => /.+@.+/.test(v) || 'E-mail em formato inválido'
       ],
       password: '',
-      rules: {
-        required: value => !!value || 'Campo Obrigatório',
-        min: v => v.length >= 4 || 'Minimo 4 caracteres'
-      },
+      passwordRules: [
+        v => !!v || 'Campo Obrigatório',
+        v => v.length >= 4 || 'Minimo 4 caracteres'
+      ],
       openCreate: false,
     }
   },
