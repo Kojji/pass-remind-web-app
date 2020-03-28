@@ -51,8 +51,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="red darken-1" @click="closeAddDialog">Cancel</v-btn>
-          <v-btn text color="green darken-1" @click="saveNewEntry">Save</v-btn>
+          <v-btn text color="red darken-1" @click="closeAddDialog">Cancelar</v-btn>
+          <v-btn text color="green darken-1" @click="saveNewEntry">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
