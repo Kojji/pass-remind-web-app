@@ -22,14 +22,21 @@ const mutations = {
 const actions = {
   userLogin({commit}, userData) {
     return new Promise ((res, rej) => {
-      firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
-      .then(result => {
-        // eslint-disable-next-line
-        console.log(result)
-        commit("logUser")
-        commit('userId', result.user.uid)
-        router.push('/'); 
-        res()
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(()=>{
+        firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
+        .then(result => {
+          // eslint-disable-next-line
+          console.log(result)
+          commit("logUser")
+          commit('userId', result.user.uid)
+          router.push('/'); 
+          res()
+        }).catch(error => {
+          // eslint-disable-next-line
+          console.log(error)
+          rej()
+        })
       }).catch(error => {
         // eslint-disable-next-line
         console.log(error)
@@ -61,18 +68,25 @@ const actions = {
       })
     })
   },
-  // eslint-disable-next-line
-  doAuthCheck({commit, state}) {
+  doAuthCheck({commit}) {
     // eslint-disable-next-line
     return new Promise((res, rej)=>{
-      res()
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          commit("logUser")
+          commit('userId', user.uid)
+          res(true)
+        } else {
+          res(false)
+        }
+      })
     })
   },
   // eslint-disable-next-line
   storeGoogleLogin({commit,dispatch}) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let errorMessage = null;
-      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(()=>{
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase
