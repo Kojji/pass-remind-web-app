@@ -20,23 +20,21 @@ const mutations = {
 }
 
 const actions = {
-  userLogin({commit}, loginData) {
+  userLogin({commit}, userData) {
     return new Promise ((res, rej) => {
-      Axios.get('http://localhost:3000/login')
-        .then((loginArray)=>{
-          loginArray.data.forEach(element => {
-            if(loginData.login === element.login && loginData.password === element.password) {
-              commit("logUser")
-              commit('userId', element.id)
-              res()
-            }
-          })
-          if(!this.logged) {
-            rej('err1') // erro ao não encontrar a conta
-          }
-        }).catch (()=>{
-          rej('err2') // erro ao se comunicar com servidor
-        })
+      firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
+      .then(result => {
+        // eslint-disable-next-line
+        console.log(result)
+        commit("logUser")
+        commit('userId', result.user.uid)
+        router.push('/'); 
+        res()
+      }).catch(error => {
+        // eslint-disable-next-line
+        console.log(error)
+        rej()
+      })
     })
   },
   userLogoff({commit}) {
@@ -109,6 +107,19 @@ const actions = {
       if(errorMessage === null) resolve();
       else reject(errorMessage);
     })
+  },
+  userSignIn({commit},userData) {
+    firebase.auth().createUserWithEmailAndPassword(userData.login, userData.password)
+    .then(result => {
+      // eslint-disable-next-line
+      console.log(result)
+      commit("logUser")
+      commit('userId', result.user.uid)
+      router.push('/')
+    }).catch(error => {
+      // eslint-disable-next-line
+      console.log(error)
+    });
   }
 }
 

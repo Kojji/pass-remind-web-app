@@ -99,7 +99,7 @@ export default {
       password: '',
       passwordRules: [
         v => !!v || 'Campo Obrigatório',
-        v => v.length >= 4 || 'Minimo 4 caracteres'
+        v => v.length >= 6 || 'Minimo 6 caracteres'
       ],
       openCreate: false,
     }

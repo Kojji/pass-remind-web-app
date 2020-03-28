@@ -85,7 +85,7 @@ export default {
       confirmPassword: '',
       passwordRules: {
         required: v => !!v || 'Campo Obrigatório',
-        minimum: v => v.length >= 4 || 'Minimo 4 caracteres'
+        minimum: v => v.length >= 6 || 'Minimo 6 caracteres'
       },
     }
   },
@@ -101,8 +101,7 @@ export default {
         let form = []
         form.login = this.email;
         form.password = this.password;
-        // eslint-disable-next-line
-        console.log(form)
+        this.$store.dispatch('userSignIn', form)
       }
     },
   }
