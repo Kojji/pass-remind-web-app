@@ -7,6 +7,11 @@
           <v-row>
             <v-col xs="12" sm="6">
               <v-text-field
+                v-model="newItem.service"
+                label="Nome Registro"
+                required
+              ></v-text-field>
+              <v-text-field
                 v-model="newItem.login"
                 label="Login"
                 required
@@ -16,11 +21,6 @@
                 @click:append.stop="passwordGenerator"
                 v-model="newItem.password"
                 label="Senha"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="newItem.service"
-                label="Serviço"
                 required
               ></v-text-field>
               <v-text-field
@@ -83,6 +83,7 @@ export default {
     return {
       newItem:{
         password: null,
+        service: null
       },
       passLength: 15,
       configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
@@ -92,12 +93,20 @@ export default {
   },
   methods: {
     saveNewEntry() {
-      this.$store.dispatch('saveNewEntry', this.newItem)
-      this.closeAddDialog() // adicionar verificação se ja existe
+      this.$store.dispatch('verifyIfExistNew', this.newItem)
+      .then(()=>{
+        this.$store.dispatch('saveNewEntry', this.newItem)
+        this.closeAddDialog()
+      }).catch(()=>{
+        alert("Registro com nomes de serviço identicos")
+      })
     },
     closeAddDialog() {
       this.openDialog = false
-      this.newItem = { password: null }
+      this.newItem = { 
+        password: null,
+        service: null
+      }
     },
     passwordGenerator() {
       let all = '';

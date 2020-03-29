@@ -39,8 +39,10 @@ const actions = {
     dispatch('getUserList')
   },
   deleteEntry({dispatch}, userData) {
-    axios.delete(`http://localhost:3000/registry/${userData.id}`)
-    .then(()=>{
+    var firestoreDB = firebase.firestore();
+    firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
+    .delete()
+    .then(() => {
       dispatch('getUserList')
     }).catch((err)=>{
       alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
@@ -60,9 +62,8 @@ const actions = {
   },
   verifyIfExistNew({state}, userData) { // modificar
     return new Promise ((res,rej) => {
-      res()
-      state.registriesArray.find(obj=>{
-        if(obj.login == userData.login && obj.service == userData.service) {
+      state.registriesArray.forEach( entry => {
+        if(entry.service == userData.service) {
           rej()
         }
       })

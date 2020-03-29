@@ -7,6 +7,11 @@
           <v-row>
             <v-col xs="12" sm="6">
               <v-text-field
+                v-model="edited.service"
+                label="Nome Registro"
+                required
+              ></v-text-field>
+              <v-text-field
                 v-model="edited.login"
                 label="Login"
                 required
@@ -16,11 +21,6 @@
                 @click:append.stop="passwordGenerator"
                 v-model="edited.password"
                 label="Senha"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="edited.service"
-                label="Serviço"
                 required
               ></v-text-field>
               <v-text-field
@@ -97,10 +97,14 @@ export default {
   },
   methods: {
     saveEditEntry() {
-      this.$store.dispatch('verifyIfExistEdit', this.edited)
+      this.$store.dispatch('verifyIfExistEdit', this.toEdit, this.edited)
       .then(()=>{
         this.edited.dateStamp = new Date().getTime()
-        this.$store.dispatch('editEntry', this.edited)
+        let editOldNew = {
+          old: this.toEdit,
+          new: this.edited
+        }
+        this.$store.dispatch('editEntry', editOldNew)
         this.closeEditDialog()
       }).catch(()=>{
         alert("Já há um registro existente com o mesmo login e mesmo serviço ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")

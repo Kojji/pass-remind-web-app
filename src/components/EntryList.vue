@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-card class="mx-auto" max-width="1020">
+    <v-card class="mx-auto pa-4" max-width="1020">
       <v-card-actions>
-        <v-row justify-self="center" class="pa-4" >
+        <v-row justify-self="center">
           <v-text-field
             v-model="search"
             clearable
