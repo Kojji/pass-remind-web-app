@@ -1,5 +1,6 @@
 import axios from 'axios'
-//import firebase from 'firebase'
+import storeUser from './storeUser'
+import firebase from 'firebase'
 
 const state = {
   registriesArray: []
@@ -10,31 +11,37 @@ const mutations = {
 }
 
 const actions = {
-  getUserList({commit}, userData) {
-    axios.get(`http://localhost:3000/registry?userId=${userData.id}`)
-    .then((data) => {
-      commit("setRegistriesArray", data.data)
+  getUserList({commit}) {
+    var firestoreDB = firebase.firestore();
+    firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').get()
+    .then(querySnapshot => {
+      if(querySnapshot.docs.length > 0) {
+        let entriesArray = []
+        querySnapshot.forEach(doc => {
+          entriesArray.push(doc.data())
+        })
+        commit("setRegistriesArray", entriesArray)
+      } else {
+        commit("setRegistriesArray", [])
+      }
     })
-    
+    .catch(function(error) {
+      // eslint-disable-next-line
+      console.log("Error getting documents: ", error);
+    });
   },
   saveNewEntry({dispatch},userData) {
-    
+    var firestoreDB = firebase.firestore();
     let timestamp = new Date().getTime()
     let newObject = Object.assign(userData,{dateStamp: timestamp})
-    axios.post(`http://localhost:3000/registry`, newObject)
-    .then(()=>{
-      dispatch('getUserList', {id: userData.userId})
-    }).catch((err)=>{
-      alert("Houve um erro ao tentar salvar uma nova senha, por favor tente novamente mais tarde.")
-      // eslint-disable-next-line
-      console.log(err)
-    })
-    
+    firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
+    .set(newObject)
+    dispatch('getUserList')
   },
   deleteEntry({dispatch}, userData) {
     axios.delete(`http://localhost:3000/registry/${userData.id}`)
     .then(()=>{
-      dispatch('getUserList', {id: userData.userId})
+      dispatch('getUserList')
     }).catch((err)=>{
       alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
       // eslint-disable-next-line
@@ -44,15 +51,16 @@ const actions = {
   editEntry({dispatch}, userData) {
     axios.patch(`http://localhost:3000/registry/${userData.id}`, userData)
     .then(()=>{
-      dispatch('getUserList', {id: userData.userId})
+      dispatch('getUserList')
     }).catch((err)=>{
       alert("Houve um erro ao tentar modificar uma senha, por favor tente novamente mais tarde.")
       // eslint-disable-next-line
       console.log(err)
     })
   },
-  verifyIfExistNew({state}, userData) {
+  verifyIfExistNew({state}, userData) { // modificar
     return new Promise ((res,rej) => {
+      res()
       state.registriesArray.find(obj=>{
         if(obj.login == userData.login && obj.service == userData.service) {
           rej()
@@ -74,7 +82,8 @@ const actions = {
 }
 
 const getters ={
-  registriesArray(state) { return state.registriesArray }
+  registriesArray(state) { return state.registriesArray },
+  
 }
 
 export default {

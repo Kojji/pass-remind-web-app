@@ -45,10 +45,11 @@ export default {
     },
     deslogar() {
       if(confirm("Tem certeza que deseja sair do sistema?")) {
+        this.$store.commit("setRegistriesArray", [])
         this.$store.dispatch('userLogoff')
-          .then(()=>{
-            this.$router.push('/login')
-          })
+        .then(()=>{
+          this.$router.push('/login')
+        })
       }
     },
     userName() {

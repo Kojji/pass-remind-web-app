@@ -1,4 +1,3 @@
-import Axios from "axios"
 import firebase from "firebase"
 import router from '../../router'
 
@@ -16,7 +15,7 @@ const mutations = {
     state.userData = {userName :null}
   },
   userId(state, userData) { state.userId = userData},
-  setUserData(state, userData) {state.userData = userData}
+  setUserData(state, userData) {state.userData = userData},
 }
 
 const actions = {
@@ -27,21 +26,18 @@ const actions = {
       .then(()=>{
         firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
         .then(result => {
-          // eslint-disable-next-line
-          console.log(result)
           commit("logUser")
-          commit('userId', result.user.uid)
+          commit("userId", result.user.uid)
           firestoreDB.collection("users").doc(result.user.uid).get()
           .then(doc => {
             commit("setUserData", doc.data())
           })
-          //get firebase user info e commit("setUserData", data.data[0])
           router.push('/'); 
           res()
         }).catch(error => {
           // eslint-disable-next-line
           console.log(error)
-          rej()
+          rej('err1')
         })
       }).catch(error => {
         // eslint-disable-next-line
@@ -54,24 +50,11 @@ const actions = {
     return new Promise ((res, rej) => {
       firebase.auth().signOut().then(function() {
         commit("logoffUser")
+        commit("setUserData", {displayName :null})
         res()
       }).catch(function(error) {
         rej(error)
       });
-    })
-  },
-  getUserInfo({commit, state}) {
-    return new Promise ((res, rej) => {
-      Axios.get(`http://localhost:3000/users?loginId=${state.userId}`)
-      .then((data) => {
-        commit("setUserData", data.data[0])
-        
-        res()
-      }).catch((err) =>{
-        // eslint-disable-next-line
-        console.log(err)
-        rej()
-      })
     })
   },
   doAuthCheck({commit}) {
@@ -101,9 +84,7 @@ const actions = {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(()=>{
         var provider = new firebase.auth.GoogleAuthProvider();
-        firebase
-        .auth()
-        .signInWithPopup(provider)
+        firebase.auth().signInWithPopup(provider)
         .then(result => {
           // eslint-disable-next-line
           console.log(result)
@@ -126,7 +107,6 @@ const actions = {
               commit("setUserData", doc.data())
             }
           })
-          
           
           //localStorage.setItem('userInfo', JSON.stringify(dataObj));
           router.push('/'); 

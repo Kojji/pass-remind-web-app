@@ -92,16 +92,8 @@ export default {
   },
   methods: {
     saveNewEntry() {
-      
-      let objToPass = Object.assign(this.newItem, {userId: this.userData.id})
-      this.$store.dispatch('verifyIfExistNew', objToPass)
-      .then(()=>{
-        this.$store.dispatch('saveNewEntry', objToPass)
-        this.closeAddDialog()
-      }).catch(()=>{
-        alert("Já há um registro existente com o mesmo login e mesmo serviço ao qual você está tentando criar. Modifique um dos campos deste registro ou edite o registro existente")
-      })
-
+      this.$store.dispatch('saveNewEntry', this.newItem)
+      this.closeAddDialog() // adicionar verificação se ja existe
     },
     closeAddDialog() {
       this.openDialog = false

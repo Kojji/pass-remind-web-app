@@ -111,12 +111,7 @@ export default {
         form.login = this.email;
         form.password = this.password;
         this.$store.dispatch('userLogin', form)
-        .then(()=>{
-          this.$store.dispatch('getUserInfo')
-          .then(()=>{
-            this.$router.push('/')
-          })
-        }).catch((error)=>{
+        .catch((error)=>{
           if(error === 'err1') { alert("Conta não encontrada") }
           else {alert("Problema ao tentar entrar no sistema, tente mais tarde") }
         })

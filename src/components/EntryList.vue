@@ -113,7 +113,7 @@ export default {
   },
   mounted() {
     if(this.userData !== null)
-    this.$store.dispatch('getUserList', this.userData)
+    this.$store.dispatch('getUserList')
   },
   methods: {
     copyPassword(password) {

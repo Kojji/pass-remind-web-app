@@ -8,10 +8,11 @@
         Editar Informações
       </v-card-title>
       <!-- colocar foto -->
+      <span>{{userData.email}}</span>
       <v-card-actions>
         <div class="d-flex">
           <v-col cols="12">
-          
+            
           </v-col>
         </div>
       </v-card-actions>
