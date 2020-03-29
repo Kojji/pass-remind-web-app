@@ -52,7 +52,7 @@ export default {
       }
     },
     userName() {
-      if(this.userData.displayName === null || !this.userData.displayName || this.userData.displayName === '') {
+      if(!this.userData.displayName || this.userData.displayName === null || this.userData.displayName === '') {
         return 'Usuário'
       } else {
         return this.userData.displayName

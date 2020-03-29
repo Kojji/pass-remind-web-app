@@ -1,33 +1,35 @@
 <template>
-  <div class="d-flex flex-column">
-    <v-col
-      cols="12"
-      class="flex-grow-0 flex-shrink-0"
-    >
-      <v-btn text @click="deslogar">Sair</v-btn>
-      <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-        Página do Usuário para configurações
-      </v-card>
-    </v-col>
-  </div>
+  <v-container>
+    <v-card class="mx-auto" max-width="720">
+      <v-card-title>
+        <v-btn icon class="mr-4" color="orange darken-1" :to="'/'">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        Editar Informações
+      </v-card-title>
+      <!-- colocar foto -->
+      <v-card-actions>
+        <div class="d-flex">
+          <v-col cols="12">
+          
+          </v-col>
+        </div>
+      </v-card-actions>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: "User",
+  computed: {
+    ...mapGetters([
+      "userData"
+    ])
+  },
   methods: {
-    deslogar() {
-      if(confirm("Tem certeza que deseja sair do sistema?")) {
-        this.$store.dispatch('userLogoff')
-          .then(()=>{
-            this.$router.push('/login')
-          })
-      }
-    }
+    
   }
 }
 </script>
