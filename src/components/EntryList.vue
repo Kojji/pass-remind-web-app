@@ -7,7 +7,6 @@
             v-model="search"
             clearable
             solo-inverted
-            
             prepend-inner-icon="mdi-magnify"
             label="Procurar"
           ></v-text-field>
@@ -29,6 +28,7 @@
         :items-per-page.sync="itemsPerPage"
         :footer-props="footerProps"
         :search="search"
+        :custom-filter="customFilter"
       >
         <template v-slot:default="props">
           <v-row>
@@ -134,6 +134,26 @@ export default {
     editItem(entry) {
       Object.assign(this.editItemDialog,entry)
       this.openEdit = true
+    },
+    // eslint-disable-next-line
+    customFilter(items, search, filter) {
+      if(!search) {
+        return items
+      }
+      let array = []
+      items.forEach(element => {
+        let upperCaseServ = element.service.toUpperCase()
+        let upperCaseLog = element.login.toUpperCase()
+        let upperCaseLink = element.serviceLink.toUpperCase()
+
+        if( upperCaseServ.search(search.toString().toUpperCase()) >= 0
+            || upperCaseLog.search(search.toString().toUpperCase()) >= 0
+            || upperCaseLink.search(search.toString().toUpperCase()) >= 0) {
+          array.push(element)
+        }
+      })
+      
+      return array;
     }
   }
 }
