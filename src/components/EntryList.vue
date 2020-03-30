@@ -49,7 +49,14 @@
 
                 <v-list dense>
                   <v-list-item>
-                    <v-list-item-content class="align-start">{{ entry.serviceLink }}</v-list-item-content>
+                    <v-list-item-content class="align-start">
+                      <v-text-field
+                        class="passCard py-0 mt-0"
+                        :value="entry.serviceLink"
+                        append-icon="mdi-web"
+                        @click:append.stop="goto(entry.serviceLink)">
+                      </v-text-field>
+                    </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content class="align-start">{{ entry.login }}</v-list-item-content>
@@ -57,7 +64,7 @@
                   <v-list-item>
                     <v-list-item-content class="align-start">
                       <v-text-field
-                        class="passCard"
+                        class="passCard py-0 mt-0"
                         type="password"
                         :value="entry.password"
                         append-icon="mdi-content-copy"
@@ -135,6 +142,9 @@ export default {
       Object.assign(this.editItemDialog,entry)
       this.openEdit = true
     },
+    goto(url) {
+      window.open(url)
+    },
     // eslint-disable-next-line
     customFilter(items, search, filter) {
       if(!search) {
@@ -162,6 +172,9 @@ export default {
 <style>
 .v-text-field.passCard > .v-input__control > .v-input__slot:before {
   border-style: none;
+}
+.v-input__slot{
+  margin-bottom: 0;
 }
 .v-text-field.passCard > .v-input__control > .v-input__slot:after {
   border-style: none;
