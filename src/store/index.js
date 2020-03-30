@@ -6,6 +6,7 @@ import Entries from './modules/storeRegistries'
 import ToolBarFunctions from './modules/storeToolbar'
 import UserFunctions from './modules/storeUser'
 import PassGenerator from './modules/storePassGenerator'
+import Miscellaneous from  './modules/storeMisc'
 
 import firebaseConfig from '../../firebaseConfig'
 
@@ -25,5 +26,6 @@ export default new Vuex.Store({
     ToolBarFunctions,
     UserFunctions,
     PassGenerator,
+    Miscellaneous,
   }
 })

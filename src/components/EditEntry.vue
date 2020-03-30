@@ -133,7 +133,7 @@ export default {
           var character = Math.floor(Math.random() * all.length);
           password += all.substring(character, character + 1);
       }
-      this.edited.password = password;
+      this.toEdit.password = password;
     },
     deleteItem() {
       if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) {
