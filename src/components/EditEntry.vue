@@ -7,24 +7,24 @@
           <v-row>
             <v-col xs="12" sm="6">
               <v-text-field
-                v-model="edited.service"
+                v-model="toEdit.service"
                 label="Nome Registro"
                 required
               ></v-text-field>
               <v-text-field
-                v-model="edited.login"
+                v-model="toEdit.login"
                 label="Login"
                 required
               ></v-text-field>
               <v-text-field
                 append-icon="mdi-key"
                 @click:append.stop="passwordGenerator"
-                v-model="edited.password"
+                v-model="toEdit.password"
                 label="Senha"
                 required
               ></v-text-field>
               <v-text-field
-                v-model="edited.serviceLink"
+                v-model="toEdit.serviceLink"
                 label="Link"
               ></v-text-field>
             </v-col>
@@ -74,14 +74,12 @@ export default {
       configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
       minLength: 5,
       maxLength: 30,
-      edited: {
-        password: null
-      }
+      received: null
     }
   },
   computed:{
     ...mapGetters([
-      "userData",
+      "userData"
     ]),
     openDialog: {
       get () {
@@ -93,27 +91,37 @@ export default {
     }
   },
   updated() {
-    this.edited = this.toEdit
+    this.received = {
+      password: this.toEdit.password,
+      dateStamp: this.toEdit.dateStamp,
+      login: this.toEdit.login,
+      service: this.toEdit.service,
+      serviceLink: this.toEdit.serviceLink,
+    }
   },
   methods: {
     saveEditEntry() {
-      this.$store.dispatch('verifyIfExistEdit', this.toEdit, this.edited)
+      let editOldNew = {
+        old: this.received,
+        new: this.toEdit
+      }
+      this.$store.dispatch('verifyIfExistEdit', editOldNew)
       .then(()=>{
-        this.edited.dateStamp = new Date().getTime()
-        let editOldNew = {
-          old: this.toEdit,
-          new: this.edited
-        }
+        editOldNew.new.dateStamp = new Date().getTime()
         this.$store.dispatch('editEntry', editOldNew)
-        this.closeEditDialog()
+        .then(()=>{
+          this.closeEditDialog()
+        }).catch(()=>{
+          alert("Erro ao tentar modificar uma senha")
+        })
       }).catch(()=>{
-        alert("Já há um registro existente com o mesmo login e mesmo serviço ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")
+        alert("Já há um registro existente com o mesmo nome ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")
       })
 
     },
     closeEditDialog() {
       this.openDialog = false
-      this.edited = { password: null }
+      this.received = null
     },
     passwordGenerator() {
       let all = '';

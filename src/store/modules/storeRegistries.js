@@ -1,4 +1,3 @@
-import axios from 'axios'
 import storeUser from './storeUser'
 import firebase from 'firebase'
 
@@ -51,19 +50,47 @@ const actions = {
     })
   },
   editEntry({dispatch}, userData) {
-    axios.patch(`http://localhost:3000/registry/${userData.id}`, userData)
-    .then(()=>{
-      dispatch('getUserList')
-    }).catch((err)=>{
-      alert("Houve um erro ao tentar modificar uma senha, por favor tente novamente mais tarde.")
-      // eslint-disable-next-line
-      console.log(err)
+    return new Promise ((res,rej) => {
+      var firestoreDB = firebase.firestore();
+      if(userData.old.service.toUpperCase() !== userData.new.service.toUpperCase()) {
+        let oldDoc = {}
+        firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service).get()
+        .then(doc => {
+          Object.assign(oldDoc, doc.data())
+        })
+        let renewed = Object.assign(oldDoc, userData.new)
+        firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
+        .set(renewed)
+        .then(()=>{
+          firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service)
+          .delete()
+          .then(()=>{
+            dispatch('getUserList')
+            res()
+          })
+        }).catch((err)=>{
+          // eslint-disable-next-line
+          console.log(err)
+          rej()
+        })
+      } else {
+        firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
+        .set(userData.new)
+        .then(()=>{
+          dispatch('getUserList')
+          res()
+        }).catch(err => {
+          rej()
+          // eslint-disable-next-line
+          console.log(err)
+        })
+      }
     })
   },
   verifyIfExistNew({state}, userData) { // modificar
     return new Promise ((res,rej) => {
       state.registriesArray.forEach( entry => {
-        if(entry.service == userData.service) {
+        if(entry.service.toUpperCase() == userData.service.toUpperCase()) {
           rej()
         }
       })
@@ -72,19 +99,22 @@ const actions = {
   },
   verifyIfExistEdit({state}, userData) {
     return new Promise ((res,rej) => {
-      state.registriesArray.find(obj=>{
-        if(obj.login == userData.login && obj.service == userData.service && obj.id != userData.id) {
-          rej()
-        }
-      })
-      res()
+      if(userData.old.service.toUpperCase() === userData.new.service.toUpperCase()) {
+        res()
+      } else{
+        state.registriesArray.forEach( entry => {
+          if(entry.service.toUpperCase() === userData.new.service.toUpperCase()) {
+            rej()
+          }
+        })
+        res()
+      }
     })
   }
 }
 
 const getters ={
-  registriesArray(state) { return state.registriesArray },
-  
+  registriesArray(state) { return state.registriesArray }
 }
 
 export default {
