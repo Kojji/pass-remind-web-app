@@ -1,4 +1,5 @@
 import storeUser from './storeUser'
+import storeMisc from './storeMisc'
 import firebase from 'firebase'
 
 const state = {
@@ -11,6 +12,7 @@ const mutations = {
 
 const actions = {
   getUserList({commit}) {
+    storeMisc.mutations.setLoading(storeMisc.state, true)
     var firestoreDB = firebase.firestore();
     firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').get()
     .then(querySnapshot => {
@@ -23,10 +25,12 @@ const actions = {
       } else {
         commit("setRegistriesArray", [])
       }
+      storeMisc.mutations.setLoading(storeMisc.state, false)
     })
     .catch(function(error) {
       // eslint-disable-next-line
       console.log("Error getting documents: ", error);
+      storeMisc.mutations.setLoading(storeMisc.state, false)
     });
   },
   saveNewEntry({dispatch},userData) {
@@ -34,7 +38,9 @@ const actions = {
     let timestamp = new Date().getTime()
     let newObject = Object.assign(userData,{dateStamp: timestamp})
     firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
-    .set(newObject)
+    .set(newObject).then(()=>{
+      storeMisc.mutations.setSnackOn(storeMisc.state,"Registro criado com sucesso!")
+    })
     dispatch('getUserList')
   },
   deleteEntry({dispatch}, userData) {
@@ -42,6 +48,7 @@ const actions = {
     firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
     .delete()
     .then(() => {
+      storeMisc.mutations.setSnackOn(storeMisc.state,"Registro apagado com sucesso!")
       dispatch('getUserList')
     }).catch((err)=>{
       alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
@@ -65,6 +72,7 @@ const actions = {
           firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service)
           .delete()
           .then(()=>{
+            storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
             dispatch('getUserList')
             res()
           })
@@ -77,6 +85,7 @@ const actions = {
         firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
         .set(userData.new)
         .then(()=>{
+          storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
           dispatch('getUserList')
           res()
         }).catch(err => {

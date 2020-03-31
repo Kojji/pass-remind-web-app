@@ -35,15 +35,15 @@
                     v-model="passLength"
                     :max="maxLength"
                     :min="minLength"
-                    thumb-color="orange lighten-1"
-                    color="orange lighten-1"
+                    thumb-color="red lighten-1"
+                    color="red lighten-1"
                     thumb-label="always"
                     label="Tamanho"
                   ></v-slider>
-                  <v-checkbox color="orange lighten-2" class="ma-0"  v-model="configArray" label="Letras Maiusculas" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></v-checkbox>
-                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Letras Minúsculas" value="abcdefghijklmnopqrstuvwxyz"></v-checkbox>
-                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Números" value="0123456789"></v-checkbox>
-                  <v-checkbox color="orange lighten-2" class="ma-0" v-model="configArray" label="Simbolos" value=" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"></v-checkbox>
+                  <v-checkbox color="red lighten-2" class="ma-0"  v-model="configArray" label="Letras Maiusculas" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></v-checkbox>
+                  <v-checkbox color="red lighten-2" class="ma-0" v-model="configArray" label="Letras Minúsculas" value="abcdefghijklmnopqrstuvwxyz"></v-checkbox>
+                  <v-checkbox color="red lighten-2" class="ma-0" v-model="configArray" label="Números" value="0123456789"></v-checkbox>
+                  <v-checkbox color="red lighten-2" class="ma-0" v-model="configArray" label="Simbolos" value=" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"></v-checkbox>
                 </v-col>
               </v-row>
             </v-col>
@@ -51,7 +51,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="red darken-1" @click="deleteItem">Deletar</v-btn>
+          <v-btn text color="red darken-1" @click="deleteItem">Apagar</v-btn>
           <v-btn text color="orange darken-1" @click="closeEditDialog">Cancelar</v-btn>
           <v-btn text color="green darken-1" @click="saveEditEntry">Salvar</v-btn>
         </v-card-actions>

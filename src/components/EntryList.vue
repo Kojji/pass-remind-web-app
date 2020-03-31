@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="mx-auto pa-4" max-width="1020">
+    <v-card class="mx-auto pa-4" max-width="1020" v-show="!getLoading">
       <v-card-actions>
         <v-row justify-self="center">
           <v-text-field
@@ -79,9 +79,17 @@
         </template>
       </v-data-iterator>
     </v-card>
-    
+    <div class="text-center" v-show="getLoading">
+      <v-progress-circular
+      :size="70"
+      :width="7"
+      indeterminate
+      color="deep-orange lighten-1"
+      ></v-progress-circular>
+    </div>
     <editEntry v-model="openEdit" :toEdit="editItemDialog"/>
     <addNewEntry v-model="addNewDialog" />
+    <snack v-model="getShowSnack" />
   </v-container>
 </template>
 
@@ -89,11 +97,13 @@
 import {mapGetters} from 'vuex'
 import addNewEntry from "../components/AddNewEntry"
 import editEntry from "../components/EditEntry"
+import snack from "../components/Snack"
 
 export default {
   components:{
     addNewEntry,
-    editEntry
+    editEntry,
+    snack
   },
   data() {
     return {
@@ -115,8 +125,19 @@ export default {
     ...mapGetters([
       "registriesArray",
       "userData",
-      "toolBarIcons"
-    ])
+      "toolBarIcons",
+      "getLoading",
+    ]),
+    getShowSnack: {
+      get () {
+        return this.$store.getters.getShowSnack
+      },
+      set (value) {
+        if(!value) {
+          this.$store.commit('setSnackOff')
+        }
+      }
+    }
   },
   mounted() {
     if(this.userData !== null)
