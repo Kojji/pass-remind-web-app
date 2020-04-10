@@ -4,7 +4,7 @@
       v-model="openSnack"
       :timeout="timeout"
       color="grey lighten-4"
-      class="deep-orange--text"
+      class="black--text"
     >
       {{ getSnackText }}
       <v-btn

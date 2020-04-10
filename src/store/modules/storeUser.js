@@ -99,7 +99,8 @@ const actions = {
                 email: result.user.email,
                 phoneNumber: result.user.phoneNumber,
                 photoURL: result.user.photoURL,
-                uid: result.user.uid
+                uid: result.user.uid,
+                providerId: result.additionalUserInfo.providerId
               }
               firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
               commit("setUserData", infoObj)
@@ -135,7 +136,8 @@ const actions = {
         email: userData.login,
         phoneNumber: null,
         photoURL: null,
-        uid: result.user.uid
+        uid: result.user.uid,
+        providerId: result.additionalUserInfo.providerId
       }
       firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
       commit("setUserData", infoObj)
