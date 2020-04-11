@@ -14,7 +14,7 @@
             fab
             small
             rounded
-            class="ml-3 mt-1"
+            class="ml-3 mt-1 d-none d-sm-flex"
             dark
             color="orange darken-1"
             @click="addEntry"
@@ -79,6 +79,20 @@
         </template>
       </v-data-iterator>
     </v-card>
+    <div style="position: fixed; bottom:65px; left:20px;">
+      <v-btn
+        fab
+        rounded
+        right
+        class="ml-3 mt-1 d-flex d-sm-none" 
+        dark
+        color="orange darken-1"
+        @click="addEntry"
+      >
+        <v-icon>{{ toolBarIcons.addIcon }}</v-icon>
+      </v-btn>
+    </div>
+
     <div class="text-center" v-show="getLoading">
       <v-progress-circular
       :size="70"
@@ -87,6 +101,7 @@
       color="deep-orange lighten-1"
       ></v-progress-circular>
     </div>
+    
     <editEntry v-model="openEdit" :toEdit="editItemDialog"/>
     <addNewEntry v-model="addNewDialog" />
     <snack v-model="getShowSnack" />
