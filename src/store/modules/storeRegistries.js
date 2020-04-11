@@ -1,9 +1,13 @@
 import storeUser from './storeUser'
 import storeMisc from './storeMisc'
 import firebase from 'firebase'
+import SimpleCrypto from "simple-crypto-js";
+
+import {ENC} from '../../../global'
 
 const state = {
-  registriesArray: []
+  registriesArray: [],
+  crypto: new SimpleCrypto(ENC)
 }
 
 const mutations = {
@@ -19,7 +23,9 @@ const actions = {
       if(querySnapshot.docs.length > 0) {
         let entriesArray = []
         querySnapshot.forEach(doc => {
-          entriesArray.push(doc.data())
+          decrypt(doc.data()).then((decrypted)=>{
+            entriesArray.push(decrypted)
+          })
         })
         commit("setRegistriesArray", entriesArray)
       } else {
@@ -36,12 +42,16 @@ const actions = {
   saveNewEntry({dispatch},userData) {
     var firestoreDB = firebase.firestore();
     let timestamp = new Date().getTime()
-    let newObject = Object.assign(userData,{dateStamp: timestamp})
-    firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
-    .set(newObject).then(()=>{
-      storeMisc.mutations.setSnackOn(storeMisc.state,"Registro criado com sucesso!")
+    encrypt(userData).then((encrypted) => {
+      let newObject = Object.assign(encrypted,{dateStamp: timestamp})
+      // eslint-disable-next-line
+      console.log(newObject);
+      firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
+      .set(newObject).then(()=>{
+        storeMisc.mutations.setSnackOn(storeMisc.state,"Registro criado com sucesso!")
+      })
+      dispatch('getUserList')
     })
-    dispatch('getUserList')
   },
   deleteEntry({dispatch}, userData) {
     var firestoreDB = firebase.firestore();
@@ -65,33 +75,37 @@ const actions = {
         .then(doc => {
           Object.assign(oldDoc, doc.data())
         })
-        let renewed = Object.assign(oldDoc, userData.new)
-        firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
-        .set(renewed)
-        .then(()=>{
-          firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service)
-          .delete()
+        encrypt(userData.new).then((encrypted) => {
+          let renewed = Object.assign(oldDoc, encrypted)
+          firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
+          .set(renewed)
+          .then(()=>{
+            firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service)
+            .delete()
+            .then(()=>{
+              storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
+              dispatch('getUserList')
+              res()
+            })
+          }).catch((err)=>{
+            // eslint-disable-next-line
+            console.log(err)
+            rej()
+          })
+        })
+      } else {
+        encrypt(userData.new).then((encrypted)=> {
+          firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
+          .set(encrypted)
           .then(()=>{
             storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
             dispatch('getUserList')
             res()
+          }).catch(err => {
+            rej()
+            // eslint-disable-next-line
+            console.log(err)
           })
-        }).catch((err)=>{
-          // eslint-disable-next-line
-          console.log(err)
-          rej()
-        })
-      } else {
-        firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
-        .set(userData.new)
-        .then(()=>{
-          storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
-          dispatch('getUserList')
-          res()
-        }).catch(err => {
-          rej()
-          // eslint-disable-next-line
-          console.log(err)
         })
       }
     })
@@ -120,6 +134,23 @@ const actions = {
       }
     })
   }
+}
+function encrypt(registry) {
+  // eslint-disable-next-line
+  return new Promise((res, rej)=>{
+    let simpleCrypto = state.crypto
+    registry.password = simpleCrypto.encrypt(registry.password);
+    res(registry)
+  })
+}
+
+function decrypt(registry) {
+  // eslint-disable-next-line
+  return new Promise((res, rej)=>{
+    let simpleCrypto = state.crypto
+    registry.password = simpleCrypto.decrypt(registry.password);
+    res(registry)
+  })
 }
 
 const getters ={
