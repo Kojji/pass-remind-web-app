@@ -44,8 +44,6 @@ const actions = {
     let timestamp = new Date().getTime()
     encrypt(userData).then((encrypted) => {
       let newObject = Object.assign(encrypted,{dateStamp: timestamp})
-      // eslint-disable-next-line
-      console.log(newObject);
       firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
       .set(newObject).then(()=>{
         storeMisc.mutations.setSnackOn(storeMisc.state,"Registro criado com sucesso!")
