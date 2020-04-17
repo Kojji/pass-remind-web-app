@@ -1,29 +1,40 @@
-# vue-passremind
+# PassRemind
 
-## Project setup
+VueJs with Vuetify and Firebase password manager app
+
+
+ ## Project setup
+ 
 ```
+
 npm install
+
 ```
+- Create Firebase Project
+- Configure Files
+Edit Global.js.example and firebaseConfig.js.example
+
 
 ### Compiles and hot-reloads for development
+
 ```
+
 npm run serve
+
 ```
 
 ### Compiles and minifies for production
+
 ```
+
 npm run build
+
 ```
 
-### Run your tests
-```
-npm run test
+### Deploy on Firebase
+
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+firebase deploy
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```
