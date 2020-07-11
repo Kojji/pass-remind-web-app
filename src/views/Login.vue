@@ -34,19 +34,18 @@
                     :disabled="!valid"
                     color="success"
                     text
+                    small
                     @click="validate"
                   >
                   Entrar
                   </v-btn>
-                  <v-btn
+                  <!-- <v-btn
                     color="blue"
                     text
                     @click="enterGoogle"
                   >
                   Conta Google
-                  </v-btn>
-                </v-col>
-                <v-col cols="12" class="d-flex justify-center">
+                  </v-btn> -->
                   <v-btn
                     color="orange"
                     text
@@ -133,9 +132,9 @@ export default {
         })
       })
     }, */
-    enterGoogle() {
-      this.$store.dispatch('storeGoogleLogin')
-    },
+    // enterGoogle() {
+    //   this.$store.dispatch('storeGoogleLogin')
+    // },
     resetPassword() {
       // criar modal para incluir email da conta, verificar de fazer verificação por outros aparelhos ao inves de email
     }
