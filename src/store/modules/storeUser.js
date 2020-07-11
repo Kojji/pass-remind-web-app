@@ -5,6 +5,7 @@ const state = {
   logged: false,
   userId: null,
   userData: {displayName :null},
+  editUser: {},
 }
 
 const mutations = {
@@ -16,6 +17,8 @@ const mutations = {
   },
   userId(state, userData) { state.userId = userData},
   setUserData(state, userData) {state.userData = userData},
+  setEditUser(state, userData) {state.editUser = userData},
+  setEditUserByField(state, userData) { state.editUser[userData.field] = userData.value}
 }
 
 const actions = {
@@ -31,6 +34,7 @@ const actions = {
           firestoreDB.collection("users").doc(result.user.uid).get()
           .then(doc => {
             commit("setUserData", doc.data())
+            commit("setEditUser", doc.data())
           })
           router.push('/'); 
           res()
@@ -51,6 +55,7 @@ const actions = {
       firebase.auth().signOut().then(function() {
         commit("logoffUser")
         commit("setUserData", {displayName :null})
+        commit("setEditUser", {displayName :null})
         res()
       }).catch(function(error) {
         rej(error)
@@ -68,6 +73,7 @@ const actions = {
           firestoreDB.collection("users").doc(user.uid).get()
           .then(doc => {
             commit("setUserData", doc.data())
+            commit("setEditUser", doc.data())
           })
           res(true)
         } else {
@@ -104,8 +110,10 @@ const actions = {
               }
               firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
               commit("setUserData", infoObj)
+              commit("setEditUser", infoObj)
             } else {
               commit("setUserData", doc.data())
+              commit("setEditUser", doc.data())
             }
           })
           
@@ -123,12 +131,23 @@ const actions = {
       else reject(errorMessage);
     })
   },
+  editUserInfo({state, commit}, userData) {
+    return new Promise ((res,rej) => {
+      var firestoreDB = firebase.firestore();
+      firestoreDB.collection('users').doc(state.userId)
+      .set(userData)
+        .then(()=>{
+          commit('setUserData', userData);
+          res()
+        }).catch(()=> {
+          rej()
+        })
+    })
+  },
   userSignIn({commit},userData) {
     var firestoreDB = firebase.firestore();
     firebase.auth().createUserWithEmailAndPassword(userData.login, userData.password)
     .then(result => {
-      // eslint-disable-next-line
-      console.log(result)
       commit("logUser")
       commit('userId', result.user.uid)
       let infoObj = {
@@ -141,6 +160,7 @@ const actions = {
       }
       firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
       commit("setUserData", infoObj)
+      commit("setEditUser", infoObj)
       router.push('/')
     }).catch(error => {
       // eslint-disable-next-line
@@ -152,7 +172,8 @@ const actions = {
 const getters = {
   logged(state) { return state.logged },
   userId(state) { return state.userId },
-  userData(state) { return state.userData }
+  userData(state) { return state.userData },
+  editUser(state) { return state.editUser}
 }
 
 export default {

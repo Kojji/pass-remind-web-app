@@ -10,19 +10,22 @@
       <!-- colocar foto -->
       <v-card-text>
         <v-text-field
-          v-model="edited.email"
+          :value="editUser.email ? editUser.email : ''"
+          @input="setEditUserByField('email', $event)"
           label="Email"
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="edited.displayName"
+          :value="editUser.displayName ? editUser.displayName : ''"
+          @input="setEditUserByField('displayName', $event)"
           label="Nome do usuário"
-          @change="changedValue('displayName')"
+          @blur="changedValue('displayName')"
         ></v-text-field>
         <v-text-field
-          v-model="edited.phoneNumber"
+          :value="editUser.phoneNumber ? editUser.phoneNumber : ''"
+          @input="setEditUserByField('phoneNumber', $event)"
           label="Telefone"
-          @change="changedValue('phoneNumber')"
+          @blur="changedValue('phoneNumber')"
         ></v-text-field>
       </v-card-text>
       <v-card-actions class="mt-4">
@@ -37,7 +40,6 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import firebase from 'firebase'
 import snack from "../components/Snack"
 export default {
   name: "User",
@@ -51,7 +53,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "userData"
+      "userData",
+      "editUser"
     ]),
     getShowSnack: {
       get () {
@@ -65,14 +68,11 @@ export default {
     }
   },
   mounted() {
-    this.edited = {
-      displayName: this.userData.displayName,
-      phoneNumber: this.userData.phoneNumber,
-      email: this.userData.email,
-      photoURL: this.userData.photoURL
-    }
   },
   methods: {
+    setEditUserByField(field, value) {
+      this.$store.commit('setEditUserByField', {field, value})
+    },
     cancelar() {
       this.$router.push('/')
     },
@@ -82,28 +82,17 @@ export default {
     salvarEditado() {
       // salvar mudanças no documento do firebase
     },
-    changedValue(type) {
-      var user = firebase.auth().currentUser;
-      let toChange = {}
-      switch(type) {
-        case "displayName":
-          toChange = { displayName: this.edited.displayName }
-          break
-        case "phoneNumber": 
-          toChange = { phoneNumber: this.edited.phoneNumber }
-          break
-        case "photoURL":
-          toChange = { phoneNumber: this.edited.photoURL }
-          break
-        default:
-          break
+    changedValue(field) {
+      let toChange = JSON.parse(JSON.stringify(this.userData));
+      toChange[field] = this.editUser[field];
+      if(this.editUser[field] != this.userData[field]) {
+        this.$store.dispatch('editUserInfo', toChange)
+          .then(()=>{
+            this.$store.commit("setSnackOn","Informação de usuário modificado com sucesso!")
+          }).catch(()=>{
+            this.$store.commit("setSnackOn","Erro ao salvar modificações, tente novamente mais tarde!")
+          })
       }
-      user.updateProfile(toChange)
-        .then(()=>{
-          this.$store.commit("setSnackOn","Informação de usuário modificado com sucesso!")
-        }).catch(()=>{
-          this.$store.commit("setSnackOn","Erro ao salvar modificações, tente novamente mais tarde!")
-        })
     }
   }
 }
