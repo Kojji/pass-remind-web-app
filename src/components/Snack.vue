@@ -3,8 +3,7 @@
     <v-snackbar
       v-model="openSnack"
       :timeout="timeout"
-      color="grey lighten-4"
-      class="black--text"
+      color="orange"
     >
       {{ getSnackText }}
       <v-btn
