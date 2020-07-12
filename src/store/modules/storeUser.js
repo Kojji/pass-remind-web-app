@@ -23,15 +23,16 @@ const mutations = {
 
 const actions = {
   changePassword({commit}, userData) {
-    var auth = firebase.auth();
-    auth.SendPasswordResetEmailAsync(userData).ContinueWith(task => {
-      if (task.IsCanceled || task.IsFaulted) {
+    let auth = firebase.auth()
+    return new Promise ((res, rej) => {
+      auth.sendPasswordResetEmail(userData).then(function() {
+        commit("setSnackOn","E-mail de redefinição de senha enviado!")
+        res()
+      }).catch(function() {
         commit("setSnackOn","Erro ao tentar enviar o email de redefinição de senha!")
-        return;
-      }
-  
-      commit("setSnackOn","E-mail de redefinição de senha enviado!")
-    });
+        rej()
+      });
+    })
   },
   userLogin({commit}, userData) {
     var firestoreDB = firebase.firestore();

@@ -67,6 +67,9 @@ export default {
     validate () {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('changePassword', this.email)
+        .then(()=>{
+          this.closeChangeDialog()
+        })
       }
     },
   }
