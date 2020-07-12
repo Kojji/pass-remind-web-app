@@ -71,16 +71,17 @@
       </v-card-actions>
     </v-card>
     <createAccount v-model="openCreate"/>
+    <changePass v-model="openRedefinir"/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-import createAccount from "../components/CreateAccount"
 
 export default {
   components: {
-    createAccount,
+    createAccount: () => import("../components/CreateAccount"),
+    changePass: () => import("../components/ChangePass"),
   },
   computed: {
     ...mapGetters([
@@ -102,6 +103,7 @@ export default {
         v => v.length >= 6 || 'Minimo 6 caracteres'
       ],
       openCreate: false,
+      openRedefinir: false,
     }
   },
   methods:{
@@ -119,7 +121,6 @@ export default {
     },
     createAccount() { // mudar depois, realiza login "automatico" no desenvolvimento
       this.openCreate = true
-      
     },
     /* testUser() {
       let form = []
@@ -137,7 +138,7 @@ export default {
     //   this.$store.dispatch('storeGoogleLogin')
     // },
     resetPassword() {
-      // criar modal para incluir email da conta, verificar de fazer verificação por outros aparelhos ao inves de email
+      this.openRedefinir = true
     }
   }
 }
