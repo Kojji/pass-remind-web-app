@@ -7,13 +7,11 @@ import {ENC} from '../../../global'
 
 const state = {
   registriesArray: [],
-  seed: new SimpleCrypto(ENC),
-  crypto: null
+  crypto: new SimpleCrypto(ENC)
 }
 
 const mutations = {
   setRegistriesArray(state, userData) { state.registriesArray = userData },
-  setCrypto(state, userData) { state.crypto = userData }
 }
 
 const actions = {

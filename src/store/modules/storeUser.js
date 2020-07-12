@@ -25,7 +25,7 @@ const actions = {
   userLogin({commit}, userData) {
     var firestoreDB = firebase.firestore();
     return new Promise ((res, rej) => {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
       .then(()=>{
         firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
         .then(result => {
