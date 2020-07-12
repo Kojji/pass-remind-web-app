@@ -83,54 +83,54 @@ const actions = {
     })
   },
   // eslint-disable-next-line
-  storeGoogleLogin({commit,dispatch}) {
-    var firestoreDB = firebase.firestore();
-    return new Promise((resolve, reject) => {
-      let errorMessage = null;
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(()=>{
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
-        .then(result => {
-          // eslint-disable-next-line
-          console.log(result)
-          commit("logUser")
-          commit('userId', result.user.uid)
-          firestoreDB.collection("users").doc(result.user.uid).get()
-          .then(doc => {
-            let infoObj = {}
-            if(!doc.exists) {
-              infoObj = {
-                displayName: result.user.displayName,
-                email: result.user.email,
-                phoneNumber: result.user.phoneNumber,
-                photoURL: result.user.photoURL,
-                uid: result.user.uid,
-                providerId: result.additionalUserInfo.providerId
-              }
-              firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
-              commit("setUserData", infoObj)
-              commit("setEditUser", infoObj)
-            } else {
-              commit("setUserData", doc.data())
-              commit("setEditUser", doc.data())
-            }
-          })
+  // storeGoogleLogin({commit,dispatch}) {
+  //   var firestoreDB = firebase.firestore();
+  //   return new Promise((resolve, reject) => {
+  //     let errorMessage = null;
+  //     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  //     .then(()=>{
+  //       var provider = new firebase.auth.GoogleAuthProvider();
+  //       firebase.auth().signInWithPopup(provider)
+  //       .then(result => {
+  //         // eslint-disable-next-line
+  //         console.log(result)
+  //         commit("logUser")
+  //         commit('userId', result.user.uid)
+  //         firestoreDB.collection("users").doc(result.user.uid).get()
+  //         .then(doc => {
+  //           let infoObj = {}
+  //           if(!doc.exists) {
+  //             infoObj = {
+  //               displayName: result.user.displayName,
+  //               email: result.user.email,
+  //               phoneNumber: result.user.phoneNumber,
+  //               photoURL: result.user.photoURL,
+  //               uid: result.user.uid,
+  //               providerId: result.additionalUserInfo.providerId
+  //             }
+  //             firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
+  //             commit("setUserData", infoObj)
+  //             commit("setEditUser", infoObj)
+  //           } else {
+  //             commit("setUserData", doc.data())
+  //             commit("setEditUser", doc.data())
+  //           }
+  //         })
           
-          //localStorage.setItem('userInfo', JSON.stringify(dataObj));
-          router.push('/'); 
-          resolve();
-        })
-        .catch(error => {
-          errorMessage = error;
-        });
-      }).catch(err=>{
-        errorMessage = err;
-      });
-      if(errorMessage === null) resolve();
-      else reject(errorMessage);
-    })
-  },
+  //         //localStorage.setItem('userInfo', JSON.stringify(dataObj));
+  //         router.push('/'); 
+  //         resolve();
+  //       })
+  //       .catch(error => {
+  //         errorMessage = error;
+  //       });
+  //     }).catch(err=>{
+  //       errorMessage = err;
+  //     });
+  //     if(errorMessage === null) resolve();
+  //     else reject(errorMessage);
+  //   })
+  // },
   editUserInfo({state, commit}, userData) {
     return new Promise ((res,rej) => {
       var firestoreDB = firebase.firestore();

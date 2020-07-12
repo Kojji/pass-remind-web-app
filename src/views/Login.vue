@@ -50,6 +50,7 @@
                     color="orange"
                     text
                     @click="createAccount"
+                    disabled
                     small
                   >
                   Criar Conta

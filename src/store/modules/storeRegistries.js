@@ -7,11 +7,13 @@ import {ENC} from '../../../global'
 
 const state = {
   registriesArray: [],
-  crypto: new SimpleCrypto(ENC)
+  seed: new SimpleCrypto(ENC),
+  crypto: null
 }
 
 const mutations = {
-  setRegistriesArray(state, userData) { state.registriesArray = userData }
+  setRegistriesArray(state, userData) { state.registriesArray = userData },
+  setCrypto(state, userData) { state.crypto = userData }
 }
 
 const actions = {
@@ -108,6 +110,14 @@ const actions = {
       }
     })
   },
+  generateKey({state, commit}, userData) {
+    // eslint-disable-next-line
+    return new Promise ((res,rej) => {
+      let key = state.seed.encrypt(userData)
+      commit('setCrypto', new SimpleCrypto(key))
+      res()
+    })
+  },
   verifyIfExistNew({state}, userData) { // modificar
     return new Promise ((res,rej) => {
       state.registriesArray.forEach( entry => {
@@ -133,6 +143,7 @@ const actions = {
     })
   }
 }
+
 function encrypt(registry) {
   // eslint-disable-next-line
   return new Promise((res, rej)=>{
