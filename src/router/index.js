@@ -2,10 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 
-import HomePage from '../views/Home.vue'
-import LoginPage from '../views/Login.vue'
-import UserPage from '../views/User.vue'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,17 +13,17 @@ const routes = [
       if(!store.getters.logged) { next('login') }
       else next()
     },
-    component: HomePage
+    component: () => import('../views/Home.vue'),
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginPage
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/user',
     name: 'user',
-    component: UserPage
+    component: () => import('../views/User.vue'),
   },
 ]
 
