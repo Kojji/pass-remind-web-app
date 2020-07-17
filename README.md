@@ -23,6 +23,15 @@ Global.js will have a key for the encryption
 firebaseConfig.js stores your firebase project setup data
 then take out ".example"
 
+There are firebase functions on folder "functions", that can be used with
+```
+firebase deploy --only functions
+``` 
+But in order for them to work there must be configurations to be done that can be found in
+```
+https://blog.emad.in/automate-firestore-db-backups/
+https://cloud.google.com/billing/docs/how-to/notify
+```
 
 ### Compiles and hot-reloads for development
 
