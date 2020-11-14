@@ -12,8 +12,28 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text :to="redirects.redirectLogin" v-show = "!logged">Entrar</v-btn>
-        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">{{ userName() }}</v-btn>
-        <v-btn text @click="deslogar" v-show = "logged"><v-icon>{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
+        <v-btn text :to="redirects.redirectUserPage" v-show = "logged">
+          <v-avatar
+          v-if="userData.photoURL"
+            color="orange"  
+          >
+            <v-img 
+              :src="userData.photoURL"
+            >
+            </v-img>
+          </v-avatar>
+          <v-avatar 
+            color="orange"
+            v-else
+          >
+            <v-icon
+              dark
+            >
+              mdi-account-circle
+            </v-icon>
+          </v-avatar>
+        </v-btn>
+        <v-btn text @click="deslogar" v-show = "logged">Sair <v-icon small class="ml-2">{{ toolBarIcons.exitIcon }}</v-icon></v-btn>
       </v-toolbar-items>
     </v-app-bar>
   </v-layout>
@@ -52,13 +72,6 @@ export default {
         })
       }
     },
-    userName() {
-      if(!this.userData.displayName || this.userData.displayName === null || this.userData.displayName === '') {
-        return 'Usuário'
-      } else {
-        return this.userData.displayName
-      }
-    }
   }
 };
 </script>

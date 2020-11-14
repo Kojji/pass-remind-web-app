@@ -87,8 +87,10 @@ const actions = {
           .then(doc => {
             commit("setUserData", doc.data())
             commit("setEditUser", doc.data())
+            res(true)
+          }).catch(()=>{
+            res(false)
           })
-          res(true)
         } else {
           res(false)
         }
@@ -164,7 +166,7 @@ const actions = {
       commit("logUser")
       commit('userId', result.user.uid)
       let infoObj = {
-        displayName: '',
+        displayName: userData.nome,
         email: userData.login,
         phoneNumber: null,
         photoURL: null,

@@ -53,6 +53,7 @@
           :value="editUser.phoneNumber ? editUser.phoneNumber : ''"
           @input="setEditUserByField('phoneNumber', $event)"
           label="Telefone"
+          v-mask="'(##)#####-####'"
           @blur="changedValue('phoneNumber')"
         ></v-text-field>
       </v-card-text>
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+import {mask} from 'vue-the-mask';
 import {mapGetters} from 'vuex'
 import snack from "../components/Snack"
 import modalChangeFoto from "@/components/modalChangeFoto.vue"
@@ -76,6 +78,9 @@ export default {
   components:{
     snack,
     modalChangeFoto
+  },
+  directives: {
+    mask
   },
   data() {
     return {

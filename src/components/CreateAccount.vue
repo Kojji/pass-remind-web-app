@@ -13,6 +13,12 @@
                   lazy-validation
                 >
                   <v-text-field
+                    v-model="displayName"
+                    :rules="[v => !!v || 'Campo Obrigatório']"
+                    label="Nome"
+                    required
+                  ></v-text-field>
+                  <v-text-field
                     v-model="email"
                     :rules="emailRules"
                     label="E-mail"
@@ -40,7 +46,7 @@
                   ></v-text-field>
                   <div class="d-flex">
                     <v-spacer></v-spacer>
-                    <v-btn text color="red darken-1" @click="closeCreateDialog">Cancelar</v-btn>
+                    <v-btn text color="red darken-1" @click="openDialog = false">Cancelar</v-btn>
                     <v-btn text color="green darken-1" @click="validate">Criar Conta</v-btn>
                   </div>
                 </v-form>
@@ -66,6 +72,7 @@ export default {
       },
       set (value) {
         this.$emit('input', value)
+        if(!value) this.reset();
       }
     },
     confirmPassRule() {
@@ -74,6 +81,7 @@ export default {
   },
   data() {
     return {
+      displayName: '',
       valid: true,
       show1: false,
       email: '',
@@ -90,15 +98,16 @@ export default {
     }
   },
   methods: {
-    closeCreateDialog() {
-      this.openDialog = false
-      this.password = ''
-      this.confirmPassword = ''
-      this.email = ''
+    reset() {
+      this.password = '';
+      this.confirmPassword = '';
+      this.email = '';
+      this.displayName = '';
     },
     validate () {
       if (this.$refs.form.validate()) {
         let form = []
+        form.nome = this.displayName;
         form.login = this.email;
         form.password = this.password;
         this.$store.dispatch('userSignIn', form)
