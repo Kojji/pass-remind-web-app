@@ -16,10 +16,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    storeButtonLoading: false
   },
   mutations: {
+    setStoreButtonLoading(state, userData) {
+      state.storeButtonLoading = userData;
+    }
   },
   actions: {
+    
+  },
+  getters: {
+    getStoreButtonLoading(state) { return state.storeButtonLoading; }
   },
   modules: {
     Entries,

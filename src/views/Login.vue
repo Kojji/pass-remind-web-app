@@ -3,6 +3,17 @@
     <v-card class="mx-auto" max-width="480">
       <v-card-actions>
         <v-container fluid>
+          <v-row class="justify-center">
+            <v-img
+              src="@/assets/pssrLogo-128.png"
+              max-height="70"
+              max-width="70"
+            >
+            </v-img>
+          </v-row>
+          <v-row class="justify-center">
+            <p class="orange--text font-weight-bold">PassRemind</p>
+          </v-row>
           <v-row>
             <v-col cols="12">
               <v-form

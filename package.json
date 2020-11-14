@@ -10,8 +10,9 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "firebase": "^7.16.0",
+    "firebase": "^8.0.2",
     "simple-crypto-js": "^3.0.0",
+    "uuidv4": "^6.2.5",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
     "vuetify": "^2.3.4",

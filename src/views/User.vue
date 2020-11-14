@@ -8,6 +8,34 @@
         Editar Informações
       </v-card-title>
       <!-- colocar foto -->
+      <v-row class="justify-center">
+        <v-avatar
+          v-if="editUser.photoURL"
+          color="orange"
+          size="70"  
+        >
+          <v-img 
+            :src="editUser.photoURL"
+          >
+          </v-img>
+        </v-avatar>
+        <v-avatar 
+          color="orange"
+          v-else
+          size="70"
+        >
+          <v-icon 
+            dark
+            size="70"
+          >
+            mdi-account-circle
+          </v-icon>
+        </v-avatar>
+      </v-row>
+      <v-row class="justify-center pt-2">
+        <v-btn outlined text @click="changeFoto = true">Mudar Foto</v-btn>
+      </v-row>
+
       <v-card-text>
         <v-text-field
           :value="editUser.email ? editUser.email : ''"
@@ -35,20 +63,24 @@
         </v-card-actions>
     </v-card>
     <snack v-model="getShowSnack" />
+    <modalChangeFoto v-model="changeFoto" />
   </v-container>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import snack from "../components/Snack"
+import modalChangeFoto from "@/components/modalChangeFoto.vue"
 export default {
   name: "User",
   components:{
-    snack
+    snack,
+    modalChangeFoto
   },
   data() {
     return {
-      edited: {}
+      edited: {},
+      changeFoto: false
     }
   },
   computed: {

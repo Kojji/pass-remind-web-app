@@ -1,5 +1,6 @@
 import firebase from "firebase"
 import router from '../../router'
+import {v4 as uuidv4} from "uuid";
 
 const state = {
   logged: false,
@@ -37,7 +38,7 @@ const actions = {
   userLogin({commit}, userData) {
     var firestoreDB = firebase.firestore();
     return new Promise ((res, rej) => {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
       .then(()=>{
         firebase.auth().signInWithEmailAndPassword(userData.login, userData.password)
         .then(result => {
@@ -178,6 +179,39 @@ const actions = {
       // eslint-disable-next-line
       console.log(error)
     });
+  },
+  // eslint-disable-next-line
+  registerFoto({getters, commit}, userData) {
+    var storage = firebase.storage();
+    var firestoreDB = firebase.firestore();
+      return new Promise((resolve, reject) => {
+        let fileRefName = "images/" + uuidv4() + "." + userData.name.split('.')[1];
+        let fileRef = storage.ref().child(fileRefName);
+        fileRef.put(userData)
+          .then(() => {
+            storage.ref(fileRefName).getDownloadURL()
+              .then((url)=>{
+                let userObj = JSON.parse(JSON.stringify(getters.editUser));
+                  userObj.photoURL = url;
+                  firestoreDB.collection("users").doc(userObj.uid).set(userObj)
+                    .then(()=>{
+                      commit("setUserData", userObj);
+                      commit("setEditUser", userObj);
+                      resolve();
+                    }).catch(()=>{
+                      reject();
+                    })
+              }).catch((error)=>{
+                // eslint-disable-next-line
+                console.log(error);
+                reject();
+              })
+          }).catch((err) => {
+            // eslint-disable-next-line
+            console.log(err)
+            reject();
+          })
+      });
   }
 }
 

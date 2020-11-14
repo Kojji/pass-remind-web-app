@@ -5,6 +5,7 @@ global.js
 # config files
 firebaseConfig.js
 .firebase
+functions/config.js
 
 # local env files
 .env.local

@@ -1,7 +1,8 @@
+import {projectId} from "./config.js"
 const {google} = require('googleapis');
 const {auth} = require('google-auth-library');
 
-const PROJECT_ID = process.env.GCP_PROJECT;
+const PROJECT_ID = projectId;
 const PROJECT_NAME = `projects/${PROJECT_ID}`;
 const billing = google.cloudbilling('v1').projects;
 
@@ -9,22 +10,21 @@ module.exports = async function stopUsage(pubsubEvent, context) {
   const pubsubData = pubsubEvent;
   if (pubsubData.costAmount <= pubsubData.budgetAmount) {
     console.log(`No action necessary. (Current cost: ${pubsubData.costAmount})`);
-    return;
+    return `No action necessary. (Current cost: ${pubsubData.costAmount})`;
   }
 
   if (!PROJECT_ID) {
     console.log(`No project specified`);
-    return;
+    return `No project specified`;
   }
 
   await _setAuthCredential();
   const billingEnabled = await _isBillingEnabled(PROJECT_NAME);
   if (billingEnabled) {
-    console.log('Desabling billing');
     return _disableBillingForProject(PROJECT_NAME);
   } else {
     console.log('Billing already disabled');
-    return ;
+    return 'Billing already disabled';
   }
 };
 
@@ -73,5 +73,6 @@ const _disableBillingForProject = async (projectName) => {
     name: projectName,
     resource: {billingAccountName: ''}, // Disable billing
   });
+  console.log(`Billing disabled: ${JSON.stringify(res.data)}`);
   return `Billing disabled: ${JSON.stringify(res.data)}`;
 };
