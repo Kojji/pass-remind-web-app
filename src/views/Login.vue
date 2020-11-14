@@ -18,7 +18,6 @@
             <v-col cols="12">
               <v-form
                 ref="form"
-                v-model="valid"
                 lazy-validation
               >
                 <v-col cols="12">
@@ -42,7 +41,8 @@
                 </v-col>
                 <v-col cols="12" class="d-flex justify-center">
                   <v-btn
-                    :disabled="!valid"
+                    :loading="loading"
+                    :disabled="loading"
                     color="success"
                     text
                     small
@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      valid: true,
+      loading: false,
       show1: false,
       email: '',
       emailRules: [
@@ -122,10 +122,13 @@ export default {
         let form = []
         form.login = this.email;
         form.password = this.password;
+        this.loading = true;
         this.$store.dispatch('userLogin', form)
         .catch((error)=>{
           if(error === 'err1') { alert("Conta não encontrada") }
           else {alert("Problema ao tentar entrar no sistema, tente mais tarde") }
+        }).finally(()=>{
+          this.loading = false;
         })
       }
     },
