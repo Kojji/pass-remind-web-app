@@ -1,7 +1,7 @@
 const state = {
   loading: false,
   showSnack: false,
-  snackText: ''
+  snackText: {}
 }
 
 const mutations = {
@@ -12,7 +12,7 @@ const mutations = {
   },
   setSnackOff(state) { 
     state.showSnack = false
-    state.snackText = ''
+    state.snackText = {}
   }
 }
 

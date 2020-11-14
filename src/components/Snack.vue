@@ -3,11 +3,12 @@
     <v-snackbar
       v-model="openSnack"
       :timeout="timeout"
-      color="orange"
+      :color="getSnackText.color"
     >
-      {{ getSnackText }}
+      {{ getSnackText.text }}
       <v-btn
-        color="red darken-3"
+        class="ml-1"
+        color="white"
         text
         @click="openSnack = false"
       >

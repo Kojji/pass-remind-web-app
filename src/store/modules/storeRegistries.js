@@ -46,7 +46,7 @@ const actions = {
       let newObject = Object.assign(encrypted,{dateStamp: timestamp})
       firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
       .set(newObject).then(()=>{
-        storeMisc.mutations.setSnackOn(storeMisc.state,"Registro criado com sucesso!")
+        storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro criado com sucesso!"})
       })
       dispatch('getUserList')
     })
@@ -56,7 +56,7 @@ const actions = {
     firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
     .delete()
     .then(() => {
-      storeMisc.mutations.setSnackOn(storeMisc.state,"Registro apagado com sucesso!")
+      storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro apagado com sucesso!"})
       dispatch('getUserList')
     }).catch((err)=>{
       alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
@@ -81,7 +81,7 @@ const actions = {
             firestoreDB.collection("users").doc(storeUser.state.userId).collection('entries').doc(userData.old.service)
             .delete()
             .then(()=>{
-              storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
+              storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro modificado com sucesso!"})
               dispatch('getUserList')
               res()
             })
@@ -96,7 +96,7 @@ const actions = {
           firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.new.service)
           .set(encrypted)
           .then(()=>{
-            storeMisc.mutations.setSnackOn(storeMisc.state,"Registro modificado com sucesso!")
+            storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro modificado com sucesso!"})
             dispatch('getUserList')
             res()
           }).catch(err => {

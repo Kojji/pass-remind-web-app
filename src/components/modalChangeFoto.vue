@@ -128,10 +128,10 @@ export default {
         this.$store.commit("setStoreButtonLoading", true);
         this.$store.dispatch("registerFoto",this.imageFile)
           .then(()=>{
-            this.$store.commit("setSnackOn","Foto de perfil atualizada!");
+            this.$store.commit("setSnackOn",{color: "success", text: "Foto de perfil atualizada!"});
             this.openDialog = false;
           }).catch(()=>{
-            this.$store.commit("setSnackOn","Erro ao tentar atualizar foto de perfil!");
+            this.$store.commit("setSnackOn",{color: "red", text: "Erro ao tentar atualizar foto de perfil!"});
           }).finally(()=>{
             this.$store.commit("setStoreButtonLoading", false);
           })

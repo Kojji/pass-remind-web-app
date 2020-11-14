@@ -59,8 +59,8 @@
       </v-card-text>
       <v-card-actions class="mt-4">
           <v-spacer></v-spacer>
-          <!-- <v-btn text color="orange darken-1" @click="cancelar">Cancelar</v-btn> -->
-          <v-btn text color="red darken-1" @click="modificarSenha" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
+          <v-btn text color="orange darken-1" @click="modificarEmail">Moddificar Email</v-btn>
+          <v-btn text color="orange darken-1" @click="modificarSenha" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
         </v-card-actions>
     </v-card>
     <snack v-model="getShowSnack" />
@@ -116,7 +116,7 @@ export default {
     modificarSenha() {
       // modificar senha no firebase
     },
-    salvarEditado() {
+    modificarEmail() {
       // salvar mudanças no documento do firebase
     },
     changedValue(field) {
@@ -125,9 +125,9 @@ export default {
       if(this.editUser[field] != this.userData[field]) {
         this.$store.dispatch('editUserInfo', toChange)
           .then(()=>{
-            this.$store.commit("setSnackOn","Informação de usuário modificado com sucesso!")
+            this.$store.commit("setSnackOn",{color: "success", text: "Informação de usuário modificado com sucesso!"})
           }).catch(()=>{
-            this.$store.commit("setSnackOn","Erro ao salvar modificações, tente novamente mais tarde!")
+            this.$store.commit("setSnackOn",{color: "red", text: "Erro ao salvar modificações, tente novamente mais tarde!"})
           })
       }
     }

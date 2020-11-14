@@ -27,10 +27,10 @@ const actions = {
     let auth = firebase.auth()
     return new Promise ((res, rej) => {
       auth.sendPasswordResetEmail(userData).then(function() {
-        commit("setSnackOn","E-mail de redefinição de senha enviado!")
+        commit("setSnackOn",{color: "success", text: "E-mail de redefinição de senha enviado!"})
         res()
       }).catch(function() {
-        commit("setSnackOn","Erro ao tentar enviar o email de redefinição de senha!")
+        commit("setSnackOn",{color: "red", text: "Erro ao tentar enviar o email de redefinição de senha!"})
         rej()
       });
     })
