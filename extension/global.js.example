@@ -1,0 +1,1 @@
+export const ENC = <ENCRYPTION_KEY_STRING>;

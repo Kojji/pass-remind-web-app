@@ -1,0 +1,27 @@
+{
+  "name": "PassRemind",
+  "description": "componente complementar do sistema PassRemind do mesmo autor",
+  "version": null,
+  "manifest_version": 2,
+  "icons": {
+    "48": "icons/pssrLogo-48.png",
+    "128": "icons/pssrLogo-128.png"
+  },
+  "browser_action": {
+    "default_title": "pssr",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "chrome_style": true
+  }
+}
