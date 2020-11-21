@@ -139,6 +139,42 @@ const actions = {
         res()
       }
     })
+  },
+  // eslint-disable-next-line
+  readCollection({state}, userData) {
+    var testeMessage = firebase.functions().httpsCallable('readDoc');
+    return new Promise ((res, rej) =>{
+      testeMessage({text: "teste1"})
+        .then((result) => {
+          res(result)
+        }).catch((err)=>{
+          rej(err)
+        })
+    })
+  },
+  // eslint-disable-next-line
+  updateDoc({state}, userData) {
+    var testeMessage = firebase.functions().httpsCallable('updateDoc');
+    return new Promise ((res, rej) =>{
+      testeMessage({text: "teste1"})
+        .then((result) => {
+          res(result)
+        }).catch((err)=>{
+          rej(err)
+        })
+    })
+  },
+  // eslint-disable-next-line
+  createDoc({state}, userData) {
+    var testeMessage = firebase.functions().httpsCallable('writeDoc');
+    return new Promise ((res, rej) =>{
+      testeMessage({text: "teste1"})
+        .then((result) => {
+          res(result)
+        }).catch((err)=>{
+          rej(err)
+        })
+    })
   }
 }
 

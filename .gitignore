@@ -1,5 +1,7 @@
 webapp/.DS_Store
 webapp/node_modules
+webapp/functions/firebaseConfig.js
+webapp/functions/global.js
 webapp/dist
 webapp/global.js
 extension/node_modules

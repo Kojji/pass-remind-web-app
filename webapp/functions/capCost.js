@@ -1,8 +1,8 @@
-import {projectId} from "./config.js"
+const projectConfig =  require("./firebaseConfig.js");
 const {google} = require('googleapis');
 const {auth} = require('google-auth-library');
 
-const PROJECT_ID = projectId;
+const PROJECT_ID = projectConfig.projectId;
 const PROJECT_NAME = `projects/${PROJECT_ID}`;
 const billing = google.cloudbilling('v1').projects;
 

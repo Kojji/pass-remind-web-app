@@ -12,10 +12,10 @@
  */
 
 const {GoogleAuth} = require('google-auth-library')
-
+const projectConfig =  require("./firebaseConfig.js");
 // process.env.FIREBASE_CONFIG is automatically populated in the
 // cloud functions runtime, however we need to parse it, as a json string
-const FIREBASE_CONFIG = JSON.parse(process.env.FIREBASE_CONFIG || '{}')
+const FIREBASE_CONFIG = projectConfig;
 // the folder that was created in the default storage bucket
 const BACKUP_FOLDER = 'backups'
 
