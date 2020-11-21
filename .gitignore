@@ -1,20 +1,27 @@
-.DS_Store
-node_modules
-/dist
-global.js
+webapp/.DS_Store
+webapp/node_modules
+webapp/dist
+webapp/global.js
+extension/node_modules
+extension/*.log
+extension/dist
+extension/dist2
+extension/dist-zip
+extension/global.js
+extension/firebaseConfig.js
 # config files
-firebaseConfig.js
-.firebase
-functions/config.js
+webapp/firebaseConfig.js
+webapp/.firebase
+webapp/functions/config.js
 
 # local env files
-.env.local
-.env.*.local
+webapp/.env.local
+webapp/.env.*.local
 
 # Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+webapp/npm-debug.log*
+webapp/yarn-debug.log*
+webapp/yarn-error.log*
 
 # Editor directories and files
 .idea
