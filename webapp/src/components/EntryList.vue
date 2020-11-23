@@ -157,8 +157,8 @@ export default {
     }
   },
   mounted() {
-    if(this.userData !== null)
-    this.$store.dispatch('getUserList')
+    //if(this.userData !== null)
+    //this.$store.dispatch('getUserList')
   },
   methods: {
     copyPassword(password) {
@@ -174,7 +174,22 @@ export default {
       //avisar que foi copiado
     },
     testeUpdate() {
-      this.$store.dispatch("updateDoc")
+      let nowTime = new Date().getTime()
+      this.$store.dispatch("updateDoc",{
+        old: {
+          login: "login",
+          service: "service14",
+          serviceLink: "https://ssss",
+          password: "password"
+        },
+        new: {
+          login: "new",
+          service: "service14",
+          serviceLink: "https://aaaaa",
+          password: "changed",
+          timeStamp: nowTime
+        }
+      })
         .then((res)=>{
           // eslint-disable-next-line
           console.log(res)
@@ -184,7 +199,12 @@ export default {
         })
     },
     testeWrite() {
-      this.$store.dispatch("createDoc")
+      this.$store.dispatch("createDoc", {
+        login: "login",
+        service: "service15",
+        serviceLink: "https://ssss",
+        password: "password"
+      })
         .then((res)=>{
           // eslint-disable-next-line
           console.log(res)

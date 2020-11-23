@@ -2,7 +2,7 @@ import storeUser from './storeUser'
 import storeMisc from './storeMisc'
 import firebase from 'firebase'
 import SimpleCrypto from "simple-crypto-js";
-
+import cryptoJs from "crypto-js";
 import {ENC} from '../../../global'
 
 const state = {
@@ -12,6 +12,7 @@ const state = {
 
 const mutations = {
   setRegistriesArray(state, userData) { state.registriesArray = userData },
+  setCrypto(state, userData) { state.crypto = userData },
 }
 
 const actions = {
@@ -108,12 +109,18 @@ const actions = {
       }
     })
   },
-  generateKey({state, commit}, userData) {
+  generateKey({commit}, userData) {
     // eslint-disable-next-line
     return new Promise ((res,rej) => {
-      let key = state.seed.encrypt(userData)
-      commit('setCrypto', new SimpleCrypto(key))
-      res()
+      cryptoJs
+      var hash = crypto.SHA256(userData.uid);
+      var key128Bits = crypto.PBKDF2(userData.key, hash, {
+        keySize: 128 / 32
+      });
+      commit('setCrypto', new SimpleCrypto(key128Bits.toString()))
+      // eslint-disable-next-line
+      console.log(key128Bits.toString())
+      res(true)
     })
   },
   verifyIfExistNew({state}, userData) { // modificar
@@ -156,7 +163,7 @@ const actions = {
   updateDoc({state}, userData) {
     var testeMessage = firebase.functions().httpsCallable('updateDoc');
     return new Promise ((res, rej) =>{
-      testeMessage({text: "teste1"})
+      testeMessage(userData)
         .then((result) => {
           res(result)
         }).catch((err)=>{
@@ -166,9 +173,10 @@ const actions = {
   },
   // eslint-disable-next-line
   createDoc({state}, userData) {
-    var testeMessage = firebase.functions().httpsCallable('writeDoc');
+    var newDoc = firebase.functions().httpsCallable('writeDoc');
+    userData.timestamp = new Date().getTime();
     return new Promise ((res, rej) =>{
-      testeMessage({text: "teste1"})
+      newDoc(userData)
         .then((result) => {
           res(result)
         }).catch((err)=>{
@@ -197,7 +205,8 @@ function decrypt(registry) {
 }
 
 const getters ={
-  registriesArray(state) { return state.registriesArray }
+  registriesArray(state) { return state.registriesArray },
+  getCrypto(state) { return state.crypto },
 }
 
 export default {

@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions')
 const backup = require('./backup')
 const stopUsage = require('./capCost')
-var crypto = require("crypto-js");
+const crypto = require("crypto-js");
 
 admin.initializeApp(projectConfig);
 // runs once a month
@@ -27,14 +27,18 @@ exports.stopUsage = functions.pubsub.topic('cap-cost').onPublish(async (message,
 
 exports.readDoc = functions.https.onCall((data, context)=>{
   return new Promise((res, rej) => {
-    let key = generateKey(context.auth.uid);
+    let key = crypto.SHA256(context.auth.uid);
+    let derivation = crypto.PBKDF2(key, seedKey, {
+      keySize: 128 / 32
+    });
     admin.firestore().collection("users").doc(context.auth.uid).collection('entries').get()
       .then( querySnapshot => {
         if(querySnapshot.docs.length > 0) {
           let entryArray = [];
           querySnapshot.forEach(item => {
             let entry = item.data();
-            //entry.password = crypto.AES.decrypt(entry.password,key);
+            var decrypted = crypto.AES.decrypt(entry.password, derivation.toString());
+            entry.password = decrypted.toString(crypto.enc.Utf8);
             entryArray.push(entry);
           })
           res(entryArray);
@@ -50,56 +54,54 @@ exports.readDoc = functions.https.onCall((data, context)=>{
 
 exports.writeDoc = functions.https.onCall((data, context)=>{
   return new Promise((res, rej) => {
-    //let key = generateKey(context.auth.uid);
-    res(data)
-    // admin.firestore().collection("users").doc(context.auth.uid).collection('entries').get()
-    //   .then( querySnapshot => {
-    //     if(querySnapshot.docs.length > 0) {
-    //       let entryArray = [];
-    //       querySnapshot.forEach(item => {
-    //         let entry = item.data();
-    //         entry.password = CryptoJS.AES.decrypt(entry.password,key);
-    //         entryArray.push(entry);
-    //       })
-    //       res(entryArray);
-    //     } else {
-    //       res({});
-    //     }
-    //     return 1;
-    //   }).catch((err)=>{
-    //     rej(err);
-    //   })
+    let key = crypto.SHA256(context.auth.uid);
+    let derivation = crypto.PBKDF2(key, seedKey, {
+      keySize: 128 / 32
+    });
+    let encrypted = crypto.AES.encrypt(data.password, derivation.toString());
+    data.password = encrypted.toString();
+    admin.firestore().collection("users").doc(context.auth.uid).collection('entries').doc(data.service)
+      .set(data).then(()=>{
+        res({success: true})
+        return 1;
+      }).catch((err)=>{
+        rej(err)
+      })
   });
 })
 
 exports.updateDoc = functions.https.onCall((data, context)=>{
   return new Promise((res, rej) => {
-    //let key = generateKey(context.auth.uid);
-    res(data)
-    // admin.firestore().collection("users").doc(context.auth.uid).collection('entries').get()
-    //   .then( querySnapshot => {
-    //     if(querySnapshot.docs.length > 0) {
-    //       let entryArray = [];
-    //       querySnapshot.forEach(item => {
-    //         let entry = item.data();
-    //         entry.password = CryptoJS.AES.decrypt(entry.password,key);
-    //         entryArray.push(entry);
-    //       })
-    //       res(entryArray);
-    //     } else {
-    //       res({});
-    //     }
-    //     return 1;
-    //   }).catch((err)=>{
-    //     rej(err);
-    //   })
+    let key = crypto.SHA256(context.auth.uid);
+    let derivation = crypto.PBKDF2(key, seedKey, {
+      keySize: 128 / 32
+    });
+    let encrypted = crypto.AES.encrypt(data.new.password, derivation.toString());
+    data.new.password = encrypted.toString();
+    if(data.old.service.toUpperCase() !== data.new.service.toUpperCase()) {
+      admin.firestore().collection('users').doc(context.auth.uid).collection('entries').doc(data.new.service)
+        .set(data.new)
+        .then(()=>{
+          admin.firestore().collection('users').doc(context.auth.uid).collection('entries').doc(data.old.service)
+            .delete().then(()=>{
+              res({success: true})
+              return 1;
+            }).catch((err)=>{
+              rej(err)
+            })
+          return 1;
+        }).catch((err)=>{
+          rej(err)
+        })
+    } else {
+      admin.firestore().collection('users').doc(context.auth.uid).collection('entries').doc(data.new.service)
+        .set(data.new)
+        .then(()=>{
+          res({success: true})
+          return 1;
+        }).catch(err => {
+          rej(err)
+        })
+    }
   });
 })
-
-function generateKey(passPhrase) {
-  let key = crypto.SHA256(passPhrase);
-  let derivation = crypto.PBKDF2(key, seedKey, {
-    keySize: 128 / 32
-  });
-  return derivation.toString();
-}

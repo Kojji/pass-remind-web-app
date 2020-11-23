@@ -83,7 +83,9 @@ export default {
     return {
       newItem:{
         password: null,
-        service: null
+        service: null,
+        login: null,
+        serviceLink: null
       },
       passLength: 15,
       configArray: ['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz', '0123456789', ' !#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
@@ -105,7 +107,9 @@ export default {
       this.openDialog = false
       this.newItem = { 
         password: null,
-        service: null
+        service: null,
+        login: null,
+        serviceLink: null
       }
     },
     passwordGenerator() {

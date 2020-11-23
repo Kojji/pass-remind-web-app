@@ -91,13 +91,7 @@ export default {
     }
   },
   updated() {
-    this.received = {
-      password: this.toEdit.password,
-      dateStamp: this.toEdit.dateStamp,
-      login: this.toEdit.login,
-      service: this.toEdit.service,
-      serviceLink: this.toEdit.serviceLink,
-    }
+    this.received = JSON.parse(JSON.stringify(this.toEdit));
   },
   methods: {
     saveEditEntry() {
