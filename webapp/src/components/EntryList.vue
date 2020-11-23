@@ -1,8 +1,5 @@
 <template>
   <v-container>
-    <v-btn text @click="testeRead">read</v-btn>
-    <v-btn text @click="testeWrite">write</v-btn>
-    <v-btn text @click="testeUpdate">update</v-btn>
     <v-card class="mx-auto pa-4" max-width="1020" v-show="!getLoading">
       <v-card-actions>
         <v-row justify-self="center">
@@ -157,8 +154,8 @@ export default {
     }
   },
   mounted() {
-    //if(this.userData !== null)
-    //this.$store.dispatch('getUserList')
+    if(this.userData !== null)
+    this.$store.dispatch('getUserList')
   },
   methods: {
     copyPassword(password) {
@@ -172,56 +169,6 @@ export default {
       document.body.removeChild(clipboard)
       alert("senha copiada")
       //avisar que foi copiado
-    },
-    testeUpdate() {
-      let nowTime = new Date().getTime()
-      this.$store.dispatch("updateDoc",{
-        old: {
-          login: "login",
-          service: "service14",
-          serviceLink: "https://ssss",
-          password: "password"
-        },
-        new: {
-          login: "new",
-          service: "service14",
-          serviceLink: "https://aaaaa",
-          password: "changed",
-          timeStamp: nowTime
-        }
-      })
-        .then((res)=>{
-          // eslint-disable-next-line
-          console.log(res)
-        }).catch((err) => {
-          // eslint-disable-next-line
-          console.log(err)
-        })
-    },
-    testeWrite() {
-      this.$store.dispatch("createDoc", {
-        login: "login",
-        service: "service15",
-        serviceLink: "https://ssss",
-        password: "password"
-      })
-        .then((res)=>{
-          // eslint-disable-next-line
-          console.log(res)
-        }).catch((err) => {
-          // eslint-disable-next-line
-          console.log(err)
-        })
-    },
-    testeRead() {
-      this.$store.dispatch("readCollection")
-        .then((res)=>{
-          // eslint-disable-next-line
-          console.log(res)
-        }).catch((err) => {
-          // eslint-disable-next-line
-          console.log(err)
-        })
     },
     addEntry() {
       this.addNewDialog = true

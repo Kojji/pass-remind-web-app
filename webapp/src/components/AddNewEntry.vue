@@ -52,7 +52,13 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text color="red darken-1" @click="closeAddDialog">Cancelar</v-btn>
-          <v-btn text color="green darken-1" @click="saveNewEntry">Salvar</v-btn>
+          <v-btn 
+            text
+            color="green darken-1"
+            @click="saveNewEntry"
+            :disabled="getStoreButtonLoading"
+            :loading="getStoreButtonLoading"
+          >Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -69,6 +75,7 @@ export default {
   computed:{
     ...mapGetters([
       "userData",
+      "getStoreButtonLoading"
     ]),
     openDialog: {
       get () {
@@ -95,12 +102,20 @@ export default {
   },
   methods: {
     saveNewEntry() {
+      this.$store.commit("setStoreButtonLoading", true);
       this.$store.dispatch('verifyIfExistNew', this.newItem)
       .then(()=>{
         this.$store.dispatch('saveNewEntry', this.newItem)
-        this.closeAddDialog()
+          .then(()=>{
+            this.closeAddDialog()
+            this.$store.commit("setStoreButtonLoading", false);
+          }).catch(()=>{
+            alert("Problema ao tentar salvar novo registro")
+            this.$store.commit("setStoreButtonLoading", false);
+          })
       }).catch(()=>{
         alert("Registro com nomes de serviço identicos")
+        this.$store.commit("setStoreButtonLoading", false);
       })
     },
     closeAddDialog() {

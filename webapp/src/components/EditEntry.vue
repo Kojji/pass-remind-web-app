@@ -51,9 +51,21 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="red darken-1" @click="deleteItem">Apagar</v-btn>
+          <v-btn 
+            text 
+            color="red darken-1" 
+            @click="deleteItem"
+            :disabled="getStoreAuxButtonLoading"
+            :loading="getStoreAuxButtonLoading"  
+          >Apagar</v-btn>
           <v-btn text color="orange darken-1" @click="closeEditDialog">Cancelar</v-btn>
-          <v-btn text color="green darken-1" @click="saveEditEntry">Salvar</v-btn>
+          <v-btn 
+            text 
+            color="green darken-1" 
+            @click="saveEditEntry"
+            :disabled="getStoreButtonLoading"
+            :loading="getStoreButtonLoading"  
+          >Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,7 +91,9 @@ export default {
   },
   computed:{
     ...mapGetters([
-      "userData"
+      "userData",
+      "getStoreButtonLoading",
+      "getStoreAuxButtonLoading"
     ]),
     openDialog: {
       get () {
@@ -99,16 +113,20 @@ export default {
         old: this.received,
         new: this.toEdit
       }
+      this.$store.commit("setStoreButtonLoading", true);
       this.$store.dispatch('verifyIfExistEdit', editOldNew)
       .then(()=>{
         editOldNew.new.dateStamp = new Date().getTime()
         this.$store.dispatch('editEntry', editOldNew)
         .then(()=>{
+          this.$store.commit("setStoreButtonLoading", false);
           this.closeEditDialog()
         }).catch(()=>{
+          this.$store.commit("setStoreButtonLoading", false);
           alert("Erro ao tentar modificar uma senha")
         })
       }).catch(()=>{
+        this.$store.commit("setStoreButtonLoading", false);
         alert("Já há um registro existente com o mesmo nome ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")
       })
 
@@ -131,8 +149,14 @@ export default {
     },
     deleteItem() {
       if(confirm("Você está prestes a deletar uma senha, deseja continuar?")) {
+        this.$store.commit("setStoreAuxButtonLoading", true);
         this.$store.dispatch('deleteEntry', this.toEdit)
-        this.closeEditDialog()
+          .then(()=>{
+            this.$store.commit("setStoreAuxButtonLoading", false);
+            this.closeEditDialog()
+          }).catch(()=>{
+            this.$store.commit("setStoreAuxButtonLoading", false);
+          })
       }
     }
   }
