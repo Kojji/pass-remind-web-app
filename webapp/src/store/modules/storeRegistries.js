@@ -1,67 +1,130 @@
-import storeUser from './storeUser'
 import storeMisc from './storeMisc'
 import firebase from 'firebase'
+import crypto from "crypto-js";
 
 const state = {
   registriesArray: [],
+  key: "",
 }
 
 const mutations = {
   setRegistriesArray(state, userData) { state.registriesArray = userData },
+  setKey(state, userData) { state.key = userData },
 }
 
 const actions = {
-  // eslint-disable-next-line
-  getUserList({commit}) {
-    storeMisc.mutations.setLoading(storeMisc.state, true)
-    var docCollection = firebase.functions().httpsCallable('readDoc');
-    return new Promise ((res, rej) =>{
-      docCollection()
-        .then((result) => {
-          commit("setRegistriesArray", result.data)
-          res()
-        }).catch((err)=>{
-          rej(err)
-        }).finally(()=>{
-          storeMisc.mutations.setLoading(storeMisc.state, false)
-        })
+  getUserList({commit, getters}) {
+    return new Promise((res, rej) =>{
+      var firebaseDB = firebase.firestore();
+      storeMisc.mutations.setLoading(storeMisc.state, true)
+      if(getters.getKey == "") {
+        var functionRef = firebase.functions().httpsCallable("getPassEnc");
+        functionRef()
+          .then((resp)=>{
+            commit("setKey", resp.data);
+            firebaseDB.collection("users").doc(getters.userId).collection('entries').get()
+              .then( querySnapshot => {
+                let entryArray = [];
+                if(querySnapshot.docs.length > 0) {
+                  querySnapshot.forEach(item => {
+                    let entry = item.data();
+                    var decrypted = crypto.AES.decrypt(entry.password, resp.data);
+                    entry.password = decrypted.toString(crypto.enc.Utf8);
+                    entryArray.push(entry);
+                  })
+                }
+                commit("setRegistriesArray", entryArray);
+                res();
+              }).catch((err)=>{
+                rej(err);
+              })
+          }).catch(()=>{
+            rej();
+          }).finally(()=>{
+            storeMisc.mutations.setLoading(storeMisc.state, false)
+          })
+      } else {
+        firebaseDB.collection("users").doc(getters.userId).collection('entries').get()
+          .then( querySnapshot => {
+            let entryArray = [];
+            if(querySnapshot.docs.length > 0) {
+              querySnapshot.forEach(item => {
+                let entry = item.data();
+                var decrypted = crypto.AES.decrypt(entry.password, getters.getKey);
+                entry.password = decrypted.toString(crypto.enc.Utf8);
+                entryArray.push(entry);
+              })
+            }
+            commit("setRegistriesArray", entryArray);
+            res();
+          }).catch((err)=>{
+            rej(err);
+          }).finally(()=>{
+            storeMisc.mutations.setLoading(storeMisc.state, false)
+          })
+      }
     })
   },
-  saveNewEntry({dispatch},userData) {
-    var newDoc = firebase.functions().httpsCallable('writeDoc');
-    userData.timestamp = new Date().getTime();
-    return new Promise ((res, rej) =>{
-      newDoc(userData)
-        .then(() => {
+  saveNewEntry({dispatch, getters},userData) {
+    var firebaseDB = firebase.firestore();
+    return new Promise((res, rej)=>{
+      let toSave = JSON.parse(JSON.stringify(userData));
+      let encrypted = crypto.AES.encrypt(userData.password, getters.getKey);
+      toSave.password = encrypted.toString();
+      firebaseDB.collection("users").doc(getters.userId).collection('entries').doc(userData.service).set(toSave)
+        .then(()=>{
           dispatch('getUserList')
           res()
         }).catch((err)=>{
           rej(err)
         })
-    })
+    });
   },
-  deleteEntry({dispatch}, userData) {
+  deleteEntry({dispatch, getters}, userData) {
     var firestoreDB = firebase.firestore();
-    firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
-    .delete()
-    .then(() => {
-      dispatch('getUserList')
-    }).catch((err)=>{
-      // eslint-disable-next-line
-      console.log(err)
-    })
-  },
-  editEntry({dispatch}, userData) {
-    var updateDoc = firebase.functions().httpsCallable('updateDoc');
-    return new Promise ((res, rej) =>{
-      updateDoc(userData)
+    return new Promise((res, rej)=>{
+      firestoreDB.collection('users').doc(getters.userId).collection('entries').doc(userData.service)
+      .delete()
         .then(() => {
           dispatch('getUserList')
-          res()
+          res();
         }).catch((err)=>{
-          rej(err)
+          rej(err);
         })
     })
+  },
+  editEntry({dispatch, getters}, userData) {
+    var firebaseDB = firebase.firestore();
+    return new Promise((res, rej) => {
+      let toSave = JSON.parse(JSON.stringify(userData.new));
+      let encrypted = crypto.AES.encrypt(userData.new.password, getters.getKey);
+      toSave.password = encrypted.toString();
+      if(userData.old.service.toUpperCase() !== toSave.service.toUpperCase()) {
+        firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(toSave.service)
+          .set(toSave)
+          .then(()=>{
+            firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(userData.old.service)
+              .delete()
+              .then(()=>{
+                dispatch('getUserList')
+                res()
+              }).catch((err)=>{
+                rej(err)
+              })
+          }).catch((err)=>{
+            rej(err)
+          })
+      } else {
+        firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(toSave.service)
+          .set(toSave)
+          .then(()=>{
+            dispatch('getUserList')
+            res()
+          }).catch(err => {
+            rej(err)
+          })
+      }
+    });
   },
   verifyIfExistNew({state}, userData) { // modificar
     return new Promise ((res,rej) => {
@@ -91,6 +154,7 @@ const actions = {
 
 const getters ={
   registriesArray(state) { return state.registriesArray },
+  getKey(state) { return state.key },
 }
 
 export default {

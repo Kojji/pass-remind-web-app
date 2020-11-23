@@ -141,6 +141,7 @@ export default {
       "userData",
       "toolBarIcons",
       "getLoading",
+      "getKey",
     ]),
     getShowSnack: {
       get () {

@@ -19,7 +19,7 @@ const mutations = {
   userId(state, userData) { state.userId = userData},
   setUserData(state, userData) {state.userData = userData},
   setEditUser(state, userData) {state.editUser = userData},
-  setEditUserByField(state, userData) { state.editUser[userData.field] = userData.value}
+  setEditUserByField(state, userData) { state.editUser[userData.field] = userData.value},
 }
 
 const actions = {
@@ -221,7 +221,7 @@ const getters = {
   logged(state) { return state.logged },
   userId(state) { return state.userId },
   userData(state) { return state.userData },
-  editUser(state) { return state.editUser}
+  editUser(state) { return state.editUser },
 }
 
 export default {
