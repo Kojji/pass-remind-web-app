@@ -6,27 +6,35 @@
         <v-card-text>
           <v-row>
             <v-col xs="12" sm="6">
-              <v-text-field
-                v-model="toEdit.service"
-                label="Nome Registro"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="toEdit.login"
-                label="Login"
-                required
-              ></v-text-field>
-              <v-text-field
-                append-icon="mdi-key"
-                @click:append.stop="passwordGenerator"
-                v-model="toEdit.password"
-                label="Senha"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="toEdit.serviceLink"
-                label="Link"
-              ></v-text-field>
+              <v-form
+                ref="formEntry"
+                lazy-validation
+              >
+                <v-text-field
+                  v-model="toEdit.service"
+                  label="Nome Registro"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="toEdit.login"
+                  label="Login"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  append-icon="mdi-key"
+                  @click:append.stop="passwordGenerator"
+                  v-model="toEdit.password"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  label="Senha"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="toEdit.serviceLink"
+                  label="Link"
+                ></v-text-field>
+              </v-form>
             </v-col>
             <v-col sm="6" class="d-none d-sm-flex">
               <v-row>
@@ -117,24 +125,25 @@ export default {
         old: this.received,
         new: this.toEdit
       }
-      this.$store.commit("setStoreButtonLoading", true);
-      this.$store.dispatch('verifyIfExistEdit', editOldNew)
-      .then(()=>{
-        editOldNew.new.dateStamp = new Date().getTime()
-        this.$store.dispatch('editEntry', editOldNew)
+      if (this.$refs.formEntry.validate()) {
+        this.$store.commit("setStoreButtonLoading", true);
+        this.$store.dispatch('verifyIfExistEdit', editOldNew)
         .then(()=>{
-          this.$store.commit("setSnackOn",{color: "success", text: "Registro modificado com sucesso!"});
-          this.$store.commit("setStoreButtonLoading", false);
-          this.openDialog = false;
+          editOldNew.new.dateStamp = new Date().getTime()
+          this.$store.dispatch('editEntry', editOldNew)
+          .then(()=>{
+            this.$store.commit("setSnackOn",{color: "success", text: "Registro modificado com sucesso!"});
+            this.$store.commit("setStoreButtonLoading", false);
+            this.openDialog = false;
+          }).catch(()=>{
+            this.$store.commit("setStoreButtonLoading", false);
+            this.$store.commit("setSnackOn",{color: "red", text: "Problema ao editar registro!"});
+          })
         }).catch(()=>{
           this.$store.commit("setStoreButtonLoading", false);
-          this.$store.commit("setSnackOn",{color: "red", text: "Problema ao editar registro!"});
+          this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com o mesmo nome!"});
         })
-      }).catch(()=>{
-        this.$store.commit("setStoreButtonLoading", false);
-        this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com o mesmo nome!"});
-      })
-
+      }
     },
     passwordGenerator() {
       let all = '';

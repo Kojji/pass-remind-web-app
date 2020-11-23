@@ -6,27 +6,35 @@
         <v-card-text>
           <v-row>
             <v-col xs="12" sm="6">
-              <v-text-field
-                v-model="newItem.service"
-                label="Nome Registro"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="newItem.login"
-                label="Login"
-                required
-              ></v-text-field>
-              <v-text-field
-                append-icon="mdi-key"
-                @click:append.stop="passwordGenerator"
-                v-model="newItem.password"
-                label="Senha"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="newItem.serviceLink"
-                label="Link"
-              ></v-text-field>
+              <v-form
+                ref="formEntry"
+                lazy-validation
+              >
+                <v-text-field
+                  v-model="newItem.service"
+                  label="Nome Registro"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="newItem.login"
+                  label="Login"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  append-icon="mdi-key"
+                  @click:append.stop="passwordGenerator"
+                  v-model="newItem.password"
+                  :rules="[v => !!v || 'Campo Obrigatório']"
+                  label="Senha"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="newItem.serviceLink"
+                  label="Link"
+                ></v-text-field>
+              </v-form>
             </v-col>
             <v-col sm="6" class="d-none d-sm-flex">
               <v-row>
@@ -103,22 +111,24 @@ export default {
   },
   methods: {
     saveNewEntry() {
-      this.$store.commit("setStoreButtonLoading", true);
-      this.$store.dispatch('verifyIfExistNew', this.newItem)
-      .then(()=>{
-        this.$store.dispatch('saveNewEntry', this.newItem)
-          .then(()=>{
-            this.openDialog = false
-            this.$store.commit("setSnackOn",{color: "success", text: "Registro criado com sucesso!"});
-            this.$store.commit("setStoreButtonLoading", false);
-          }).catch(()=>{
-            this.$store.commit("setSnackOn",{color: "red", text: "Problema ao criar registro!"});
-            this.$store.commit("setStoreButtonLoading", false);
-          })
-      }).catch(()=>{
-        this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com mesmo nome!"});
-        this.$store.commit("setStoreButtonLoading", false);
-      })
+      if (this.$refs.formEntry.validate()) {
+        this.$store.commit("setStoreButtonLoading", true);
+        this.$store.dispatch('verifyIfExistNew', this.newItem)
+        .then(()=>{
+          this.$store.dispatch('saveNewEntry', this.newItem)
+            .then(()=>{
+              this.openDialog = false
+              this.$store.commit("setSnackOn",{color: "success", text: "Registro criado com sucesso!"});
+              this.$store.commit("setStoreButtonLoading", false);
+            }).catch(()=>{
+              this.$store.commit("setSnackOn",{color: "red", text: "Problema ao criar registro!"});
+              this.$store.commit("setStoreButtonLoading", false);
+            })
+        }).catch(()=>{
+          this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com mesmo nome!"});
+          this.$store.commit("setStoreButtonLoading", false);
+        })
+      }
     },
     reset() {
       this.newItem = { 
