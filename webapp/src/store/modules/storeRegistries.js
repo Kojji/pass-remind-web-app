@@ -34,7 +34,6 @@ const actions = {
       newDoc(userData)
         .then(() => {
           dispatch('getUserList')
-          storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro criado com sucesso!"})
           res()
         }).catch((err)=>{
           rej(err)
@@ -46,10 +45,8 @@ const actions = {
     firestoreDB.collection('users').doc(storeUser.state.userId).collection('entries').doc(userData.service)
     .delete()
     .then(() => {
-      storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro apagado com sucesso!"})
       dispatch('getUserList')
     }).catch((err)=>{
-      alert("Houve um erro ao tentar deletar uma senha, por favor tente novamente mais tarde.")
       // eslint-disable-next-line
       console.log(err)
     })
@@ -59,7 +56,6 @@ const actions = {
     return new Promise ((res, rej) =>{
       updateDoc(userData)
         .then(() => {
-          storeMisc.mutations.setSnackOn(storeMisc.state,{color: "success", text: "Registro modificado com sucesso!"})
           dispatch('getUserList')
           res()
         }).catch((err)=>{

@@ -51,7 +51,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="red darken-1" @click="closeAddDialog">Cancelar</v-btn>
+          <v-btn text color="red darken-1" @click="openDialog = false">Cancelar</v-btn>
           <v-btn 
             text
             color="green darken-1"
@@ -83,6 +83,7 @@ export default {
       },
       set (value) {
         this.$emit('input', value)
+        if(!value) this.reset();
       }
     }
   },
@@ -107,19 +108,19 @@ export default {
       .then(()=>{
         this.$store.dispatch('saveNewEntry', this.newItem)
           .then(()=>{
-            this.closeAddDialog()
+            this.openDialog = false
+            this.$store.commit("setSnackOn",{color: "success", text: "Registro criado com sucesso!"});
             this.$store.commit("setStoreButtonLoading", false);
           }).catch(()=>{
-            alert("Problema ao tentar salvar novo registro")
+            this.$store.commit("setSnackOn",{color: "red", text: "Problema ao criar registro!"});
             this.$store.commit("setStoreButtonLoading", false);
           })
       }).catch(()=>{
-        alert("Registro com nomes de serviço identicos")
+        this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com mesmo nome!"});
         this.$store.commit("setStoreButtonLoading", false);
       })
     },
-    closeAddDialog() {
-      this.openDialog = false
+    reset() {
       this.newItem = { 
         password: null,
         service: null,

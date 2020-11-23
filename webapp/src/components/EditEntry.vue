@@ -58,7 +58,7 @@
             :disabled="getStoreAuxButtonLoading"
             :loading="getStoreAuxButtonLoading"  
           >Apagar</v-btn>
-          <v-btn text color="orange darken-1" @click="closeEditDialog">Cancelar</v-btn>
+          <v-btn text color="orange darken-1" @click="openDialog = false;">Cancelar</v-btn>
           <v-btn 
             text 
             color="green darken-1" 
@@ -101,6 +101,7 @@ export default {
       },
       set (value) {
         this.$emit('input', value)
+        if(!value) this.reset();
       }
     }
   },
@@ -108,6 +109,9 @@ export default {
     this.received = JSON.parse(JSON.stringify(this.toEdit));
   },
   methods: {
+    reset() {
+      this.received = null;
+    },
     saveEditEntry() {
       let editOldNew = {
         old: this.received,
@@ -119,21 +123,18 @@ export default {
         editOldNew.new.dateStamp = new Date().getTime()
         this.$store.dispatch('editEntry', editOldNew)
         .then(()=>{
+          this.$store.commit("setSnackOn",{color: "success", text: "Registro modificado com sucesso!"});
           this.$store.commit("setStoreButtonLoading", false);
-          this.closeEditDialog()
+          this.openDialog = false;
         }).catch(()=>{
           this.$store.commit("setStoreButtonLoading", false);
-          alert("Erro ao tentar modificar uma senha")
+          this.$store.commit("setSnackOn",{color: "red", text: "Problema ao editar registro!"});
         })
       }).catch(()=>{
         this.$store.commit("setStoreButtonLoading", false);
-        alert("Já há um registro existente com o mesmo nome ao qual você está tentando editar. Modifique um dos campos deste registro ou edite o registro existente")
+        this.$store.commit("setSnackOn",{color: "orange", text: "Já há um registro com o mesmo nome!"});
       })
 
-    },
-    closeEditDialog() {
-      this.openDialog = false
-      this.received = null
     },
     passwordGenerator() {
       let all = '';
@@ -153,9 +154,11 @@ export default {
         this.$store.dispatch('deleteEntry', this.toEdit)
           .then(()=>{
             this.$store.commit("setStoreAuxButtonLoading", false);
-            this.closeEditDialog()
+            this.$store.commit("setSnackOn",{color: "success", text: "Registro excluido com sucesso!"});
+            this.openDialog = false;
           }).catch(()=>{
             this.$store.commit("setStoreAuxButtonLoading", false);
+            this.$store.commit("setSnackOn",{color: "red", text: "Problema ao deletar registro!"});
           })
       }
     }
