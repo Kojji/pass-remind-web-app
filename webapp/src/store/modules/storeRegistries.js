@@ -100,20 +100,17 @@ const actions = {
       let encrypted = crypto.AES.encrypt(userData.new.password, getters.getKey);
       toSave.password = encrypted.toString();
       if(userData.old.service.toUpperCase() !== toSave.service.toUpperCase()) {
-        firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(toSave.service)
-          .set(toSave)
-          .then(()=>{
-            firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(userData.old.service)
-              .delete()
-              .then(()=>{
-                dispatch('getUserList')
-                res()
-              }).catch((err)=>{
-                rej(err)
-              })
-          }).catch((err)=>{
-            rej(err)
-          })
+        var batch = firebaseDB.batch();
+        var newRef = firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(toSave.service);
+        batch.set(newRef, toSave);
+        var oldRef = firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(userData.old.service);
+        batch.delete(oldRef);
+        batch.commit().then(function () {
+          dispatch('getUserList')
+          res();
+        }).catch((err)=>{
+          rej(err);
+        });
       } else {
         firebaseDB.collection('users').doc(getters.userId).collection('entries').doc(toSave.service)
           .set(toSave)
@@ -126,7 +123,7 @@ const actions = {
       }
     });
   },
-  verifyIfExistNew({state}, userData) { // modificar
+  verifyIfExistNew({state}, userData) {
     return new Promise ((res,rej) => {
       state.registriesArray.forEach( entry => {
         if(entry.service.toUpperCase() == userData.service.toUpperCase()) {
