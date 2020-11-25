@@ -6,5 +6,6 @@ export default {
   userDocs: [],
   pageURL: '',
   editEntry: {},
-  crypto: null
+  crypto: null,
+  key: ""
 }

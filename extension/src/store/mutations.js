@@ -22,5 +22,8 @@ export default {
   },
   setCrypto(state, userData) { 
     state.crypto = userData; 
+  },
+  setKey(state, userData) {
+    state.key = userData;
   }
 };

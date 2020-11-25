@@ -1,33 +1,7 @@
 import firebase from 'firebase'
-import SimpleCrypto from "simple-crypto-js";
-import {ENC} from '../../global'
-//let seed = new SimpleCrypto(ENC)
-let crypto = new SimpleCrypto(ENC)
-function decrypt(registry) {
-  return new Promise((res, rej)=>{
-    let simpleCrypto = crypto
-    registry.password = simpleCrypto.decrypt(registry.password);
-    res(registry)
-  })
-}
-function encrypt(registry) {
-  return new Promise((res, rej)=>{
-    let simpleCrypto = crypto
-    registry.password = simpleCrypto.encrypt(registry.password);
-    res(registry)
-  })
-}
+import crypto from "crypto-js";
+
 export default {
-  generateKey({}, userData) {
-    return new Promise ((res,rej) => {
-      let key = seed.encrypt(userData)
-      crypto = new SimpleCrypto(key)
-      res()
-    })
-  },
-  resetKey({}) {
-    crypto = null
-  },
   emailLogin({state, commit}, userData) {
     var firestoreDB = firebase.firestore();
     return new Promise ((res, rej) => {
@@ -69,22 +43,46 @@ export default {
       })
     })
   },
-  queryDocsUser({state, commit}) {
-    var firestoreDB = firebase.firestore();
+  queryDocsUser({getters, commit}) {
+    var firebaseDB = firebase.firestore();
     return new Promise ((res, rej) => {
-      firestoreDB
-        .collection("users")
-        .doc(state.user.uid)
-        .collection('entries')
-        .where("serviceLink", "==", state.pageURL)
-        .get()
+      if(getters.getKey == "") {
+        var functionRef = firebase.functions().httpsCallable("getPassEnc");
+        functionRef()
+          .then((resp)=>{
+            commit("setKey", resp.data);
+            firebaseDB.collection("users").doc(getters.getUser.uid).collection('entries').where("serviceLink", "==", getters.getPageURL).get()
+              .then(querySnapshot => {
+                if(querySnapshot.docs.length > 0) {
+                  let entriesArray = [];
+                  querySnapshot.forEach(item => {
+                    let entry = item.data();
+                    var decrypted = crypto.AES.decrypt(entry.password, getters.getKey);
+                    entry.password = decrypted.toString(crypto.enc.Utf8);
+                    entriesArray.push(entry);
+                  })
+                  commit("setUserDocs", entriesArray);
+                } else {
+                  commit("setUserDocs", []);
+                }
+              }).finally(()=>{
+                res();
+              })
+          }).catch(()=>{
+            rej();
+          }).finally(()=>{
+            storeMisc.mutations.setLoading(storeMisc.state, false)
+          })
+      } else {
+        firebaseDB.collection("users").doc(getters.getUser.uid).collection('entries').where("serviceLink", "==", getters.getPageURL).get()
           .then(querySnapshot => {
             if(querySnapshot.docs.length > 0) {
               let entriesArray = [];
-              querySnapshot.forEach(doc => {
-                decrypt(doc.data()).then((decrypted)=>{
-                  entriesArray.push(decrypted);
-                })
+              querySnapshot.forEach(item => {
+                let entry = item.data();
+                var decrypted = crypto.AES.decrypt(entry.password, getters.getKey);
+                entry.password = decrypted.toString(crypto.enc.Utf8);
+                entriesArray.push(entry);
               })
               commit("setUserDocs", entriesArray);
             } else {
@@ -93,6 +91,7 @@ export default {
           }).finally(()=>{
             res();
           })
+      }
     })
   },
   doAuthCheck({commit}) {
@@ -120,45 +119,45 @@ export default {
       });
     })
   },
-  storeGoogleLogin({state, commit}) {
-    var firestoreDB = firebase.firestore();
-    return new Promise((res, rej) => {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(()=>{
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider)
-        .then(result => {
-          commit("setLogged", true);
-          commit('setUser', result.user)
-          firestoreDB
-            .collection("users")
-            .doc(result.user.uid)
-            .collection('entries')
-            .where("serviceLink", "==", state.pageURL)
-            .get()
-              .then(querySnapshot => {
-                if(querySnapshot.docs.length > 0) {
-                  let entriesArray = []
-                  querySnapshot.forEach(doc => {
-                    decrypt(doc.data()).then((decrypted)=>{
-                      entriesArray.push(decrypted)
-                    })
-                  })
-                  commit("setUserDocs", entriesArray)
-                } else {
-                  commit("setUserDocs", [])
-                }
-              })
-          res(result)
-        })
-        .catch(error => {
-          rej();
-        });
-      }).catch(err=>{
-        rej();
-      });
-    })
-  },
+  // storeGoogleLogin({state, commit}) {
+  //   var firestoreDB = firebase.firestore();
+  //   return new Promise((res, rej) => {
+  //     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  //     .then(()=>{
+  //       var provider = new firebase.auth.GoogleAuthProvider();
+  //       firebase.auth().signInWithRedirect(provider)
+  //       .then(result => {
+  //         commit("setLogged", true);
+  //         commit('setUser', result.user)
+  //         firestoreDB
+  //           .collection("users")
+  //           .doc(result.user.uid)
+  //           .collection('entries')
+  //           .where("serviceLink", "==", state.pageURL)
+  //           .get()
+  //             .then(querySnapshot => {
+  //               if(querySnapshot.docs.length > 0) {
+  //                 let entriesArray = []
+  //                 querySnapshot.forEach(doc => {
+  //                   decrypt(doc.data()).then((decrypted)=>{
+  //                     entriesArray.push(decrypted)
+  //                   })
+  //                 })
+  //                 commit("setUserDocs", entriesArray)
+  //               } else {
+  //                 commit("setUserDocs", [])
+  //               }
+  //             })
+  //         res(result)
+  //       })
+  //       .catch(error => {
+  //         rej();
+  //       });
+  //     }).catch(err=>{
+  //       rej();
+  //     });
+  //   })
+  // },
   verifyIfExistEdit({state}, userData) {
     return new Promise ((res,rej) => {
       if(userData.old.service.toUpperCase() === userData.new.service.toUpperCase()) {
@@ -183,65 +182,50 @@ export default {
       res()
     })
   },
-  editEntry({state, dispatch}, userData) {
+  editEntry({getters, dispatch}, userData) {
+    var firebaseDB = firebase.firestore();
     return new Promise ((res,rej) => {
-      var firestoreDB = firebase.firestore();
-      if(userData.old.service.toUpperCase() !== userData.new.service.toUpperCase()) {
-        let oldDoc = {}
-        firestoreDB.collection("users").doc(state.user.uid).collection('entries').doc(userData.old.service).get()
-        .then(doc => {
-          Object.assign(oldDoc, doc.data())
-        })
-        encrypt(userData.new).then((encrypted) => {
-          let renewed = Object.assign(oldDoc, encrypted)
-          firestoreDB.collection("users").doc(state.user.uid).collection('entries').doc(userData.new.service)
-          .set(renewed)
-          .then(()=>{
-            firestoreDB.collection("users").doc(state.user.uid).collection('entries').doc(userData.old.service)
-            .delete()
-            .then(()=>{
-              dispatch('queryDocsUser')
-              res()
-            })
-          }).catch((err)=>{
-            // eslint-disable-next-line
-            console.log(err)
-            rej()
-          })
-        })
+      let toSave = JSON.parse(JSON.stringify(userData.new));
+      let encrypted = crypto.AES.encrypt(userData.new.password, getters.getKey);
+      toSave.password = encrypted.toString();
+      if(userData.old.service.toUpperCase() !== toSave.service.toUpperCase()) {
+        var batch = firebaseDB.batch();
+        var newRef = firebaseDB.collection('users').doc(getters.getUser.uid).collection('entries').doc(toSave.service);
+        batch.set(newRef, toSave);
+        var oldRef = firebaseDB.collection('users').doc(getters.getUser.uid).collection('entries').doc(userData.old.service);
+        batch.delete(oldRef);
+        batch.commit().then(function () {
+          dispatch('queryDocsUser')
+          res();
+        }).catch((err)=>{
+          rej(err);
+        });
       } else {
-        encrypt(userData.new).then((encrypted)=> {
-          firestoreDB.collection('users').doc(state.user.uid).collection('entries').doc(userData.new.service)
-          .set(encrypted)
+        firebaseDB.collection('users').doc(getters.getUser.uid).collection('entries').doc(toSave.service)
+          .set(toSave)
           .then(()=>{
             dispatch('queryDocsUser')
             res()
           }).catch(err => {
-            rej()
-            // eslint-disable-next-line
-            console.log(err)
+            rej(err)
           })
-        })
       }
-    })
+    });
   },
-  saveNewEntry({state,dispatch},userData) {
-    return new Promise ((res,rej) => {
-      var firestoreDB = firebase.firestore();
-      let timestamp = new Date().getTime();
-      encrypt(userData)
-        .then((encrypted) => {
-          let newObject = Object.assign(encrypted,{dateStamp: timestamp})
-          firestoreDB.collection('users').doc(state.user.uid).collection('entries').doc(userData.service)
-          .set(newObject).then(()=>{
-            dispatch('queryDocsUser');
-            res();
-          }).catch(()=>{
-            rej();
-          })
-        }).catch(()=>{
-          rej();
+  saveNewEntry({getters,dispatch},userData) {
+    var firebaseDB = firebase.firestore();
+    return new Promise((res, rej)=>{
+      let toSave = JSON.parse(JSON.stringify(userData));
+      let encrypted = crypto.AES.encrypt(userData.password, getters.getKey);
+      toSave.password = encrypted.toString();
+      toSave.dateStamp = new Date().getTime();
+      firebaseDB.collection("users").doc(getters.getUser.uid).collection('entries').doc(userData.service).set(toSave)
+        .then(()=>{
+          dispatch('queryDocsUser');
+          res()
+        }).catch((err)=>{
+          rej(err)
         })
-      })
+    });
   },
 }

@@ -19,5 +19,8 @@ export default {
   },
   getEditEntry(state) {
     return state.editEntry;
+  },
+  getKey(state) {
+    return state.key
   }
 }
