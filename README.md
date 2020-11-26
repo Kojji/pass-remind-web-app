@@ -3,11 +3,12 @@
 VueJs with Vuetify and Firebase password manager app.
 This project is intended to be used in a small scale environment
 This web app, "webapp" folder, can work together with the browser extension from this author, that can be found in the "extension" folder
+The "Billing" on the firebase must be enabled, due to the backup functionality, which is done every 5th day of the month, you can disable it by commenting the "dbBackup" function on the "/webapp/functions/index"
 
 ## Project setup
 - Create a Firebase Project
 - Configure Files
-Edit Global.js.example and firebaseConfig.js.example
+Edit Global.js.example(/extension) and firebaseConfig.js.example(/extension and /webapp)
 Where Global.js will have a seed to generate the cryptograph key
 firebaseConfig.js stores your firebase project setup data
 then take out ".example"
