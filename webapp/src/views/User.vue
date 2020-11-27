@@ -60,10 +60,11 @@
       <v-card-actions class="mt-4">
           <v-spacer></v-spacer>
           <v-btn text color="orange darken-1" @click="modificarEmail">Moddificar Email</v-btn>
-          <v-btn text color="orange darken-1" @click="modificarSenha" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
+          <v-btn text color="orange darken-1" @click="changePass = true" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
         </v-card-actions>
     </v-card>
     <modalChangeFoto v-model="changeFoto" />
+    <modalChangePass v-model="changePass" />
   </v-container>
 </template>
 
@@ -71,10 +72,12 @@
 import {mask} from 'vue-the-mask';
 import {mapGetters} from 'vuex'
 import modalChangeFoto from "@/components/modalChangeFoto.vue"
+import modalChangePass from "@/components/modalChangePassLogged.vue"
 export default {
   name: "User",
   components:{
-    modalChangeFoto
+    modalChangeFoto,
+    modalChangePass
   },
   directives: {
     mask
@@ -82,7 +85,8 @@ export default {
   data() {
     return {
       edited: {},
-      changeFoto: false
+      changeFoto: false,
+      changePass: false
     }
   },
   computed: {

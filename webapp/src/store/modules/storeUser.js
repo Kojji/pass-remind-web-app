@@ -180,6 +180,32 @@ const actions = {
     })
   },
   // eslint-disable-next-line
+  confirmOldPassword({getters}, userData){
+    return new Promise((resolve, reject) => {
+      var user = firebase.auth().currentUser;
+      var credential = firebase.auth.EmailAuthProvider.credential(
+        firebase.auth().currentUser.email,
+        userData
+      );
+
+      user.reauthenticateWithCredential(credential).then(() => {
+        resolve();
+      }).catch((error)=>{
+        error.code == "auth/wrong-password" ? reject(true) : reject(false); 
+      });
+    })
+  },
+  // eslint-disable-next-line
+  changePasswordLogged({getters}, userData) {
+    return new Promise((resolve, reject)=>{
+      firebase.auth().currentUser.updatePassword(userData)
+        .then(()=>{
+          resolve();
+        }).catch(()=>{
+          reject();
+        })
+    })
+  },
   registerFoto({getters, commit}, userData) {
     var storage = firebase.storage();
     var firestoreDB = firebase.firestore();
