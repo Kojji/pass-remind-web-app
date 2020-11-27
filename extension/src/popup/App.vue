@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
     <div>
-      <h3>PassRemind Extension teste</h3>
+      <h3>PassRemind Extension</h3>
     </div>
     <div v-show="getLoading">
       <div class="loading-animation"></div>
