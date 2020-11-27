@@ -60,7 +60,6 @@
                   <v-btn
                     color="orange"
                     text
-                    disabled
                     @click="createAccount"
                     small
                   >

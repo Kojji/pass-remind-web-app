@@ -47,7 +47,13 @@
                   <div class="d-flex">
                     <v-spacer></v-spacer>
                     <v-btn text color="red darken-1" @click="openDialog = false">Cancelar</v-btn>
-                    <v-btn text color="green darken-1" @click="validate">Criar Conta</v-btn>
+                    <v-btn 
+                      text 
+                      color="green darken-1" 
+                      @click="validate"
+                      :disabled="getStoreButtonLoading"
+                      :loading="getStoreButtonLoading"
+                    >Criar Conta</v-btn>
                   </div>
                 </v-form>
               </v-col>
@@ -60,12 +66,16 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex"
 export default {
   name: 'createAccount',
   props: {
     value: Boolean,
   },
   computed:{
+    ...mapGetters([
+      "getStoreButtonLoading"
+    ]),
     openDialog: {
       get () {
         return this.value
@@ -110,7 +120,19 @@ export default {
         form.nome = this.displayName;
         form.login = this.email;
         form.password = this.password;
+        this.$store.commit("setStoreButtonLoading", true);
         this.$store.dispatch('userSignIn', form)
+          .then(()=>{
+            this.$router.push('/');
+          }).catch( err =>{
+            if(err == "auth/email-already-in-use") {
+              this.$store.commit("setSnackOn",{color: "orange", text: "Já há uma conta com este endereço de email!"});
+            } else {
+              this.$store.commit("setSnackOn",{color: "red", text: "Houve um erro ao tentar criar uma conta!"});
+            }
+          }).finally(()=>{
+            this.$store.commit("setStoreButtonLoading", false);
+          })
       }
     },
   }

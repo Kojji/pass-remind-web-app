@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import entryList from '../components/EntryList'
+import entryList from '@/components/EntryList'
 
 export default {
   name: "Home",

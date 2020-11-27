@@ -63,7 +63,6 @@
           <v-btn text color="orange darken-1" @click="modificarSenha" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
         </v-card-actions>
     </v-card>
-    <snack v-model="getShowSnack" />
     <modalChangeFoto v-model="changeFoto" />
   </v-container>
 </template>
@@ -71,12 +70,10 @@
 <script>
 import {mask} from 'vue-the-mask';
 import {mapGetters} from 'vuex'
-import snack from "../components/Snack"
 import modalChangeFoto from "@/components/modalChangeFoto.vue"
 export default {
   name: "User",
   components:{
-    snack,
     modalChangeFoto
   },
   directives: {
@@ -93,16 +90,6 @@ export default {
       "userData",
       "editUser"
     ]),
-    getShowSnack: {
-      get () {
-        return this.$store.getters.getShowSnack
-      },
-      set (value) {
-        if(!value) {
-          this.$store.commit('setSnackOff')
-        }
-      }
-    }
   },
   mounted() {
   },

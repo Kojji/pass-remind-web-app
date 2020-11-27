@@ -46,20 +46,16 @@ const actions = {
           commit("userId", result.user.uid)
           firestoreDB.collection("users").doc(result.user.uid).get()
           .then(doc => {
-            commit("setUserData", doc.data())
-            commit("setEditUser", doc.data())
+            commit("setUserData", doc.data());
+            commit("setEditUser", doc.data());
           })
           router.push('/'); 
-          res()
-        }).catch(error => {
-          // eslint-disable-next-line
-          console.log(error)
-          rej('err1')
+          res();
+        }).catch(() => {
+          rej('err1');
         })
-      }).catch(error => {
-        // eslint-disable-next-line
-        console.log(error)
-        rej()
+      }).catch(() => {
+        rej();
       })
     })
   },
@@ -161,26 +157,27 @@ const actions = {
   },
   userSignIn({commit},userData) {
     var firestoreDB = firebase.firestore();
-    firebase.auth().createUserWithEmailAndPassword(userData.login, userData.password)
-    .then(result => {
-      commit("logUser")
-      commit('userId', result.user.uid)
-      let infoObj = {
-        displayName: userData.nome,
-        email: userData.login,
-        phoneNumber: null,
-        photoURL: null,
-        uid: result.user.uid,
-        providerId: result.additionalUserInfo.providerId
-      }
-      firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
-      commit("setUserData", infoObj)
-      commit("setEditUser", infoObj)
-      router.push('/')
-    }).catch(error => {
-      // eslint-disable-next-line
-      console.log(error)
-    });
+    return new Promise((resolve, reject) =>{
+      firebase.auth().createUserWithEmailAndPassword(userData.login, userData.password)
+      .then(result => {
+        commit("logUser")
+        commit('userId', result.user.uid)
+        let infoObj = {
+          displayName: userData.nome,
+          email: userData.login,
+          phoneNumber: null,
+          photoURL: null,
+          uid: result.user.uid,
+          providerId: result.additionalUserInfo.providerId
+        }
+        firestoreDB.collection("users").doc(result.user.uid).set(infoObj)
+        commit("setUserData", infoObj);
+        commit("setEditUser", infoObj);
+        resolve();
+      }).catch(error => {
+        reject(error.code);
+      });
+    })
   },
   // eslint-disable-next-line
   registerFoto({getters, commit}, userData) {

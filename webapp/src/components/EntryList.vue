@@ -103,21 +103,19 @@
     
     <editEntry v-model="openEdit" :toEdit="editItemDialog"/>
     <addNewEntry v-model="addNewDialog" />
-    <snack v-model="getShowSnack" />
   </v-container>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-import addNewEntry from "../components/AddNewEntry"
-import editEntry from "../components/EditEntry"
-import snack from "../components/Snack"
+import addNewEntry from "@/components/AddNewEntry"
+import editEntry from "@/components/EditEntry"
+
 
 export default {
   components:{
     addNewEntry,
-    editEntry,
-    snack
+    editEntry
   },
   data() {
     return {
@@ -142,17 +140,7 @@ export default {
       "toolBarIcons",
       "getLoading",
       "getKey",
-    ]),
-    getShowSnack: {
-      get () {
-        return this.$store.getters.getShowSnack
-      },
-      set (value) {
-        if(!value) {
-          this.$store.commit('setSnackOff')
-        }
-      }
-    }
+    ])
   },
   mounted() {
     if(this.userData !== null)
