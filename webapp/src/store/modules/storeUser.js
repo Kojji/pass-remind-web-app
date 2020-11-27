@@ -23,16 +23,16 @@ const mutations = {
 }
 
 const actions = {
+  // eslint-disable-next-line
   changePassword({commit}, userData) {
     let auth = firebase.auth()
     return new Promise ((res, rej) => {
-      auth.sendPasswordResetEmail(userData).then(function() {
-        commit("setSnackOn",{color: "success", text: "E-mail de redefinição de senha enviado!"})
-        res()
-      }).catch(function() {
-        commit("setSnackOn",{color: "red", text: "Erro ao tentar enviar o email de redefinição de senha!"})
-        rej()
-      });
+      auth.sendPasswordResetEmail(userData)
+        .then(() => {
+          res();
+        }).catch((err) => {
+          rej(err);
+        });
     })
   },
   userLogin({commit}, userData) {
