@@ -22,7 +22,8 @@
   "dependencies": {
     "axios": "^0.19.0",
     "crypto-js": "^4.0.0",
-    "firebase": "^7.15.5",
+    "firebase": "^7.24.0",
+    "serialize-javascript": "^5.0.1",
     "simple-crypto-js": "^3.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.1",
@@ -37,7 +38,7 @@
     "archiver": "^3.0.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.2",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^5.1.2",
     "core-js": "^3.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^3.4.0",
