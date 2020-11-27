@@ -63,6 +63,15 @@
           <v-btn text color="orange darken-1" @click="changePass = true" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
         </v-card-actions>
     </v-card>
+    <v-row class="justify-center mt-3">
+      <v-btn 
+        color="orange darken-3" 
+        outlined 
+        @click="downloadPlugin" 
+        :loading="loadingButton"
+        :disabled="loadingButton"
+      ><a download="plugin" href="/passRemind.zip">Download Plugin</a></v-btn>
+    </v-row>
     <modalChangeFoto v-model="changeFoto" />
     <modalChangePass v-model="changePass" />
     <modalChangeEmail v-model="changeEmail" />
@@ -90,7 +99,8 @@ export default {
       edited: {},
       changeFoto: false,
       changePass: false,
-      changeEmail: false
+      changeEmail: false,
+      loadingButton: false
     }
   },
   computed: {
@@ -119,6 +129,9 @@ export default {
             this.$store.commit("setSnackOn",{color: "red", text: "Erro ao salvar modificações, tente novamente mais tarde!"})
           })
       }
+    },
+    downloadPlugin() {
+
     }
   }
 }

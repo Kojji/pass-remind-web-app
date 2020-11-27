@@ -4,6 +4,7 @@ webapp/functions/firebaseConfig.js
 webapp/functions/global.js
 webapp/dist
 webapp/global.js
+webapp/public/passRemind.zip
 extension/node_modules
 extension/*.log
 extension/dist

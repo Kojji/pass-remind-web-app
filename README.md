@@ -27,6 +27,7 @@ cd extension
 npm install
 npm run build
 ```
+*after you build the extension, create a "passRemind.zip", with the "dist" folder and place it where "webapp/public/passRemind.zip.example" is, otherwise it won't be possible to download the plugin from the webapp
 
 web app
 ```
