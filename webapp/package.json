@@ -13,7 +13,6 @@
     "crypto-js": "^4.0.0",
     "firebase": "^8.0.2",
     "node-forge": "^0.10.0",
-    "simple-crypto-js": "^3.0.0",
     "uuidv4": "^6.2.5",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
