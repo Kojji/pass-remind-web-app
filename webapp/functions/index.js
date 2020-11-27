@@ -1,11 +1,9 @@
 const seedKey = require("./global");
-const admin = require('firebase-admin');
 const functions = require('firebase-functions')
 const backup = require('./backup')
 const stopUsage = require('./capCost')
 const crypto = require("crypto-js");
 
-admin.initializeApp(projectConfig);
 // runs once a month
 exports.dbBackup = functions.pubsub
   // change this to preferred frequency 
@@ -20,9 +18,9 @@ exports.dbBackup = functions.pubsub
     }
 })
 
-exports.stopUsage = functions.pubsub.topic('cap-cost').onPublish(async (message, context) => {
-  await stopUsage(message.attributes, context)
-})
+// exports.stopUsage = functions.pubsub.topic('cap-cost').onPublish(async (message, context) => {
+//   await stopUsage(message.attributes, context)
+// })
 
 exports.getPassEnc = functions.https.onCall((data, context)=>{
   return new Promise((res, rej) => {
