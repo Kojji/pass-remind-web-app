@@ -59,12 +59,13 @@
       </v-card-text>
       <v-card-actions class="mt-4">
           <v-spacer></v-spacer>
-          <v-btn text color="orange darken-1" @click="modificarEmail">Moddificar Email</v-btn>
+          <v-btn text color="orange darken-1" @click="changeEmail = true">Moddificar Email</v-btn>
           <v-btn text color="orange darken-1" @click="changePass = true" v-show="userData.providerId == 'password'">Modificar senha</v-btn>
         </v-card-actions>
     </v-card>
     <modalChangeFoto v-model="changeFoto" />
     <modalChangePass v-model="changePass" />
+    <modalChangeEmail v-model="changeEmail" />
   </v-container>
 </template>
 
@@ -73,11 +74,13 @@ import {mask} from 'vue-the-mask';
 import {mapGetters} from 'vuex'
 import modalChangeFoto from "@/components/modalChangeFoto.vue"
 import modalChangePass from "@/components/modalChangePassLogged.vue"
+import modalChangeEmail from "@/components/modalChangeEmail.vue"
 export default {
   name: "User",
   components:{
     modalChangeFoto,
-    modalChangePass
+    modalChangePass,
+    modalChangeEmail
   },
   directives: {
     mask
@@ -86,7 +89,8 @@ export default {
     return {
       edited: {},
       changeFoto: false,
-      changePass: false
+      changePass: false,
+      changeEmail: false
     }
   },
   computed: {
@@ -103,12 +107,6 @@ export default {
     },
     cancelar() {
       this.$router.push('/')
-    },
-    modificarSenha() {
-      // modificar senha no firebase
-    },
-    modificarEmail() {
-      // salvar mudanças no documento do firebase
     },
     changedValue(field) {
       let toChange = JSON.parse(JSON.stringify(this.userData));

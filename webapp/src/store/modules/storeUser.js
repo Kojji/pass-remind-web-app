@@ -206,6 +206,20 @@ const actions = {
         })
     })
   },
+  // eslint-disable-next-line
+  changeEmailLogged({commit, getters}, userData) {
+    return new Promise((resolve, reject)=>{
+      firebase.auth().currentUser.updateEmail(userData)
+        .then(()=>{
+          let userInfo = JSON.parse(JSON.stringify(getters.userData));
+          userInfo.email = firebase.auth().currentUser.email;
+          commit("setUserData", userInfo);
+          resolve();
+        }).catch(()=>{
+          reject();
+        })
+    })
+  },
   registerFoto({getters, commit}, userData) {
     var storage = firebase.storage();
     var firestoreDB = firebase.firestore();
@@ -226,14 +240,10 @@ const actions = {
                     }).catch(()=>{
                       reject();
                     })
-              }).catch((error)=>{
-                // eslint-disable-next-line
-                console.log(error);
+              }).catch(()=>{
                 reject();
               })
-          }).catch((err) => {
-            // eslint-disable-next-line
-            console.log(err)
+          }).catch(() => {
             reject();
           })
       });

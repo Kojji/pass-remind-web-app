@@ -126,7 +126,7 @@ export default {
             this.$router.push('/');
           }).catch( err =>{
             if(err == "auth/email-already-in-use") {
-              this.$store.commit("setSnackOn",{color: "orange", text: "Já há uma conta com este endereço de email!"});
+              this.$store.commit("setSnackOn",{color: "orange", text: "Já há uma conta com este endereço de e-mail!"});
             } else {
               this.$store.commit("setSnackOn",{color: "red", text: "Houve um erro ao tentar criar uma conta!"});
             }

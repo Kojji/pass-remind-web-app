@@ -135,9 +135,7 @@ export default {
             this.$store.commit("setSnackOn",{color: "success", text: "Registro modificado com sucesso!"});
             this.$store.commit("setStoreButtonLoading", false);
             this.openDialog = false;
-          }).catch((err)=>{
-            // eslint-disable-next-line
-            console.log(err)
+          }).catch(()=>{
             this.$store.commit("setStoreButtonLoading", false);
             this.$store.commit("setSnackOn",{color: "red", text: "Problema ao editar registro!"});
           })

@@ -30,7 +30,7 @@ export default {
         .then((res)=>{
           this.$router.push("/main");
         }).catch((error)=>{
-          alert("email e/ou senha incorretos!")
+          alert("e-mail e/ou senha incorretos!")
         }).finally(()=>{
           this.$store.commit('setLoading', false)
         })

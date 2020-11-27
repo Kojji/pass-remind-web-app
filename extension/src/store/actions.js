@@ -31,14 +31,10 @@ export default {
                 }
               })
           res(result)
-        }).catch(error => {
-          // eslint-disable-next-line
-          console.log(error);
+        }).catch(() => {
           rej('err1');
         })
-      }).catch(error => {
-        // eslint-disable-next-line
-        console.log(error);
+      }).catch(() => {
         rej();
       })
     })
