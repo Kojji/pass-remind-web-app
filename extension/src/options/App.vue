@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Hello world!</p>
+    <p>Opçoes desabilidatas</p>
   </div>
 </template>
 

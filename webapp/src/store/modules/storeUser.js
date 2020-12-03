@@ -208,12 +208,15 @@ const actions = {
   },
   // eslint-disable-next-line
   changeEmailLogged({commit, getters}, userData) {
+    var firestoreDB = firebase.firestore();
     return new Promise((resolve, reject)=>{
       firebase.auth().currentUser.updateEmail(userData)
         .then(()=>{
           let userInfo = JSON.parse(JSON.stringify(getters.userData));
           userInfo.email = firebase.auth().currentUser.email;
           commit("setUserData", userInfo);
+          commit("setEditUser", userInfo);
+          firestoreDB.collection("users").doc(getters.userId).set(userInfo)
           resolve();
         }).catch(()=>{
           reject();
