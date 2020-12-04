@@ -165,8 +165,8 @@ const actions = {
         let infoObj = {
           displayName: userData.nome,
           email: userData.login,
-          phoneNumber: null,
-          photoURL: null,
+          phoneNumber: "",
+          photoURL: "",
           uid: result.user.uid,
           providerId: result.additionalUserInfo.providerId
         }

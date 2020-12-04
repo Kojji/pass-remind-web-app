@@ -50,8 +50,6 @@ export default {
               })
           }).catch(()=>{
             rej();
-          }).finally(()=>{
-            storeMisc.mutations.setLoading(storeMisc.state, false)
           })
       } else {
         let simpleEnc = new simpleCrypto(getters.getKey);

@@ -1,4 +1,3 @@
-import storeMisc from './storeMisc'
 import firebase from 'firebase'
 //import crypto from "crypto-js";
 import simpleCripto from "simple-crypto-js"
@@ -17,7 +16,7 @@ const actions = {
   getUserList({commit, getters}) {
     return new Promise((res, rej) =>{
       var firebaseDB = firebase.firestore();
-      storeMisc.mutations.setLoading(storeMisc.state, true)
+      commit("setLoading", true);
       if(getters.getKey == "") {
         var functionRef = firebase.functions().httpsCallable("getPassEnc");
         functionRef()
@@ -44,7 +43,7 @@ const actions = {
           }).catch(()=>{
             rej();
           }).finally(()=>{
-            storeMisc.mutations.setLoading(storeMisc.state, false)
+            commit("setLoading", false);
           })
       } else {
         let simpleEnc = new simpleCripto(getters.getKey);
@@ -65,7 +64,7 @@ const actions = {
           }).catch((err)=>{
             rej(err);
           }).finally(()=>{
-            storeMisc.mutations.setLoading(storeMisc.state, false)
+            commit("setLoading", false);
           })
       }
     })
