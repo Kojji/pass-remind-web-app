@@ -1,10 +1,8 @@
 import firebase from 'firebase'
-//import crypto from "crypto-js";
 import simpleCrypto from "simple-crypto-js"
 
 export default {
   emailLogin({state, commit}, userData) {
-    var firestoreDB = firebase.firestore();
     return new Promise ((res, rej) => {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(()=>{
@@ -36,8 +34,6 @@ export default {
                   let entriesArray = [];
                   querySnapshot.forEach(item => {
                     let entry = item.data();
-                    // var decrypted = crypto.AES.decrypt(entry.password, getters.getKey);
-                    // entry.password = decrypted.toString(crypto.enc.Utf8);
                     entry.password = simpleEnc.decrypt(entry.password);
                     entriesArray.push(entry);
                   })
@@ -59,8 +55,6 @@ export default {
               let entriesArray = [];
               querySnapshot.forEach(item => {
                 let entry = item.data();
-                // var decrypted = crypto.AES.decrypt(entry.password, getters.getKey);
-                // entry.password = decrypted.toString(crypto.enc.Utf8);
                 entry.password = simpleEnc.decrypt(entry.password);
                 entriesArray.push(entry);
               })
@@ -99,51 +93,12 @@ export default {
       });
     })
   },
-  // storeGoogleLogin({state, commit}) {
-  //   var firestoreDB = firebase.firestore();
-  //   return new Promise((res, rej) => {
-  //     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  //     .then(()=>{
-  //       var provider = new firebase.auth.GoogleAuthProvider();
-  //       firebase.auth().signInWithRedirect(provider)
-  //       .then(result => {
-  //         commit("setLogged", true);
-  //         commit('setUser', result.user)
-  //         firestoreDB
-  //           .collection("users")
-  //           .doc(result.user.uid)
-  //           .collection('entries')
-  //           .where("serviceLink", "==", state.pageURL)
-  //           .get()
-  //             .then(querySnapshot => {
-  //               if(querySnapshot.docs.length > 0) {
-  //                 let entriesArray = []
-  //                 querySnapshot.forEach(doc => {
-  //                   decrypt(doc.data()).then((decrypted)=>{
-  //                     entriesArray.push(decrypted)
-  //                   })
-  //                 })
-  //                 commit("setUserDocs", entriesArray)
-  //               } else {
-  //                 commit("setUserDocs", [])
-  //               }
-  //             })
-  //         res(result)
-  //       })
-  //       .catch(error => {
-  //         rej();
-  //       });
-  //     }).catch(err=>{
-  //       rej();
-  //     });
-  //   })
-  // },
-  verifyIfExistEdit({state}, userData) {
+  verifyIfExistEdit({getters}, userData) {
     return new Promise ((res,rej) => {
       if(userData.old.service.toUpperCase() === userData.new.service.toUpperCase()) {
         res()
       } else{
-        state.userDocs.forEach( entry => {
+        getters.getUserDocs.forEach( entry => {
           if(entry.service.toUpperCase() === userData.new.service.toUpperCase()) {
             rej()
           }
@@ -152,10 +107,10 @@ export default {
       }
     })
   },
-  verifyIfExistNew({state}, userData) { // modificar
+  verifyIfExistNew({state}, userData) {
     return new Promise ((res,rej) => {
       state.userDocs.forEach( entry => {
-        if(entry.login.toUpperCase() == userData.login.toUpperCase() || entry.service.toUpperCase() == userData.service.toUpperCase()) {
+        if(entry.service.toUpperCase() == userData.service.toUpperCase()) {
           rej()
         }
       })
@@ -167,8 +122,6 @@ export default {
     var firebaseDB = firebase.firestore();
     return new Promise ((res,rej) => {
       let toSave = JSON.parse(JSON.stringify(userData.new));
-      // let encrypted = crypto.AES.encrypt(userData.new.password, getters.getKey);
-      // toSave.password = encrypted.toString();
       toSave.password = simpleEnc.encrypt(toSave.password);
       if(userData.old.service.toUpperCase() !== toSave.service.toUpperCase()) {
         var batch = firebaseDB.batch();
@@ -199,8 +152,6 @@ export default {
     var firebaseDB = firebase.firestore();
     return new Promise((res, rej)=>{
       let toSave = JSON.parse(JSON.stringify(userData));
-      // let encrypted = crypto.AES.encrypt(userData.password, getters.getKey);
-      // toSave.password = encrypted.toString();
       toSave.password = simpleEnc.encrypt(toSave.password);
       toSave.dateStamp = new Date().getTime();
       firebaseDB.collection("users").doc(getters.getUser.uid).collection('entries').doc(userData.service).set(toSave)
